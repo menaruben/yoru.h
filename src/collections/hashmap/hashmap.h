@@ -68,10 +68,8 @@ static ns(IMap) *_hashmap_rehash(ns(IMap) *map) {
         }
     }
 
-    // old_kvps contents were just moved into new_kvps (we copied pointers), so free the old array.
     free(old_kvps);
 
-    // map->count should now equal old_count
     return map;
 }
 
@@ -207,7 +205,6 @@ static bool _hashmap_set(ns(IMap) *map, const char *key, void *value) {
         }
     }
 
-    // No collision, insert the new key-value pair
     map->key_value_pairs[index] = new_kvp;
     ++map->count;
     return true;
