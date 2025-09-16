@@ -17,4 +17,4 @@ typedef double f64;
 
 typedef void* anyptr;
 
-typedef char* cstr;
+typedef const char* cstr;

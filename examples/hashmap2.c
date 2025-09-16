@@ -7,6 +7,10 @@ struct Tuple {
     int snd;
 };
 
+/*
+    2nd example to demonstrate rehashing depending on different collision strategies
+*/
+
 int main() {
     printf("HashMap Example with Struct Values\n");
     HashMap *map = HashMaps.init(MAP_COLLISION_STRATEGY_QUADRATIC_PROBING, 76);
