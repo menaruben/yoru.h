@@ -6,6 +6,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+/*
+    TODO: rewrite to ITree interface
+*/
+
 typedef struct TrieNode {
     struct TrieNode *children[256];
     void *value;

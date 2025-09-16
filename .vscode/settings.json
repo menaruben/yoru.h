@@ -1,0 +1,28 @@
+{
+    "files.associations": {
+        "vector.h": "c",
+        "ns.h": "c",
+        "iarray.h": "c",
+        "stdbool.h": "c",
+        "funcs.h": "c",
+        "stddef.h": "c",
+        "stdlib.h": "c",
+        "deque": "c",
+        "list": "c",
+        "string": "c",
+        "unordered_map": "c",
+        "vector": "c",
+        "format": "c",
+        "array": "cpp",
+        "string_view": "cpp",
+        "span": "cpp",
+        "variant": "c",
+        "platforms.h": "c",
+        "memory_resource": "c",
+        "yoru.h": "c",
+        "hash.h": "c",
+        "types.h": "c",
+        "collections.h": "c",
+        "trie.h": "c"
+    }
+}
