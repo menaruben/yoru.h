@@ -56,10 +56,10 @@ int main() {
 
     printf("Resulting string: `%s`\n", result);
     printf("Length: %zu\n", StringBuilders.length(sb));
-
+    
+    free((void *)result);
     StringBuilders.clear(sb);
     printf("Length after clear: %zu\n", StringBuilders.length(sb));
-
     StringBuilders.destroy(sb);
     return 0;
 }

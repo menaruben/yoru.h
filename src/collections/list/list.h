@@ -2,6 +2,7 @@
 
 #include "../../ns.h"
 #include "../ilist.h"
+#include "../../types/types.h"
 
 #include <stddef.h>
 #include <stdlib.h>
@@ -11,11 +12,11 @@ typedef ns(IList) ns(LinkedList);
 
 static ns(IList) *_list_init();
 static void _list_destroy(ns(IList) *list);
-static bool _list_append(ns(IList) *list, void *value);
-static bool _list_prepend(ns(IList) *list, void *value);
-static bool _list_set(ns(IList) *list, size_t index, void *value);
-static bool _list_get(const ns(IList) *list, size_t index, void **out_value);
-static bool _list_insert(ns(IList) *list, size_t index, void *value);
+static bool _list_append(ns(IList) *list, ns(any) value);
+static bool _list_prepend(ns(IList) *list, ns(any) value);
+static bool _list_set(ns(IList) *list, size_t index, ns(any) value);
+static bool _list_get(const ns(IList) *list, size_t index, ns(any) *out_value);
+static bool _list_insert(ns(IList) *list, size_t index, ns(any) value);
 static bool _list_remove(ns(IList) *list, size_t index);
 static void _list_clear(ns(IList) *list);
 static bool _list_node_has_next(const ns(IList) *list, const ns(ListNode) *node);
@@ -75,9 +76,14 @@ static void _list_clear(ns(IList) *list) {
         free(current);
         current = next;  
     }
+    
+    // Reset the list to empty state
+    list->length = 0;
+    head->next = head;
+    head->prev = head;
 }
 
-static bool _list_append(ns(IList) *list, void *value) {
+static bool _list_append(ns(IList) *list, ns(any) value) {
     if (!list || !list->head) return false;
 
     ns(ListNode) *last = list->head->prev;
@@ -95,7 +101,7 @@ static bool _list_append(ns(IList) *list, void *value) {
     return true;
 }
 
-static bool _list_prepend(ns(IList) *list, void *value) {
+static bool _list_prepend(ns(IList) *list, ns(any) value) {
     if (!list || !list->head) return false;
 
     ns(ListNode) *first = list->head->next;
@@ -113,7 +119,7 @@ static bool _list_prepend(ns(IList) *list, void *value) {
     return true;
 }
 
-static bool _list_set(ns(IList) *list, size_t index, void *value) {
+static bool _list_set(ns(IList) *list, size_t index, ns(any) value) {
     if (!list || !list->head || index >= list->length) return false;
 
     ns(ListNode) *current = list->head->next;
@@ -125,7 +131,7 @@ static bool _list_set(ns(IList) *list, size_t index, void *value) {
     return true;
 }
 
-static bool _list_get(const ns(IList) *list, size_t index, void **out_value) {
+static bool _list_get(const ns(IList) *list, size_t index, ns(any) *out_value) {
     if (!list || !list->head || index >= list->length) return false;
 
     ns(ListNode) *current = list->head->next;
@@ -137,7 +143,7 @@ static bool _list_get(const ns(IList) *list, size_t index, void **out_value) {
     return true;
 }
 
-static bool _list_insert(ns(IList) *list, size_t index, void *value) {
+static bool _list_insert(ns(IList) *list, size_t index, ns(any) value) {
     if (!list || !list->head || index > list->length) return false;
 
     ns(ListNode) *new = (ns(ListNode *))malloc(sizeof(ns(ListNode)));
@@ -160,7 +166,7 @@ static bool _list_insert(ns(IList) *list, size_t index, void *value) {
 }
 
 static bool _list_remove(ns(IList) *list, size_t index) {
-    if (!list || !list->head || index > list->length) return false;
+    if (!list || !list->head || index >= list->length) return false;
 
     ns(ListNode) *current = list->head->next;
     for (size_t i = 0; i < index; ++i) {
@@ -170,6 +176,7 @@ static bool _list_remove(ns(IList) *list, size_t index) {
     current->prev->next = current->next;
     current->next->prev = current->prev;
     free(current);
+    --list->length;
     return true;
 }
 

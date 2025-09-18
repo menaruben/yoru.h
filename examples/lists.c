@@ -8,38 +8,29 @@ int main() {
     LinkedList *list = Lists.init();
 
     for (size_t i = 0; i < 10; ++i) {
-        int *ii = malloc(sizeof(int));
-        if (!ii) {
-            printf("There was an error allocating memory for the value\n");
-            return -1;
-        }
-
-        *ii = i;
-        if (!Lists.append(list, ii)) {
+        if (!Lists.append(list, (any){.i32 = i})) {
             printf("There was an error appending to the list\n");
             return -1;
         }
     }
-    int iii = 69;
-    if (!Lists.prepend(list, &iii)) {
+
+    if (!Lists.prepend(list, (any){.i32 = 100})) {
         printf("There was an error prepending to the list\n");
         return -1;
     }
 
-    int x = 420;
-    if (!Lists.set(list, 4, &x)) {
+    if (!Lists.set(list, 4, (any){.i32 = 420})) {
         printf("There was an error setting value of index 4 of the list\n");
     }
 
-    int *iv;
-    if (!Lists.get(list, 8, (void**)&iv)) {
+    any val1;
+    if (!Lists.get(list, 8, &val1)) {
         printf("There was an error getting the value list at index 8\n");
         return -1;
     }
-    printf("iv = %d\n", *iv);
+    printf("iv = %d\n", val1.i32);
 
-    int y = 80085;
-    if (!Lists.insert(list, 3, &y)) {
+    if (!Lists.insert(list, 3, (any){.i32 = 80085})) {
         printf("There was an error inserting the value list at index 3\n");
         return -1;
     }
@@ -52,7 +43,7 @@ int main() {
     ListNode *current = list->head->next;
     size_t v = 0;
     while (Lists.has_next(list, current)) {
-        printf("%ld: %d\n", v, *((int *)current->value));
+        printf("%ld: %d\n", v, current->value.i32);
         current = current->next;
         ++v;
     }

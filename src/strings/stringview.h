@@ -15,7 +15,6 @@ typedef struct ns(String) {
 
 typedef struct StringExtensions {
     func(const ns(String), new, const char *cstr);
-    func(const ns(String), format, const char *fmt, ...);
     func(bool, concat, const ns(String) a, const ns(String) b, ns(String) *out_string);
 } ns(StringExtensions);
 

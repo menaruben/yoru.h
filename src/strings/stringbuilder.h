@@ -5,6 +5,7 @@
 #include "../funcs/funcs.h"
 #include "../types/types.h"
 #include "../util/util.h"
+#include "../types/types.h"
 
 #include <stddef.h>
 #include <stdlib.h>
@@ -126,10 +127,7 @@ static void _stringbuilder_destroy(ns(StringBuilder) *sb) {
 
 static bool _stringbuilder_insertc(ns(StringBuilder) *sb, size_t index, char ch) {
     if (!sb || !sb->chars) return false;
-    char *c = (char *)malloc(sizeof(char));
-    if (!c) return false;
-    *c = ch;
-    return Lists.insert(sb->chars, index, c);
+    return Lists.insert(sb->chars, index, (any){.ch = ch});
 }
 
 static bool _stringbuilder_inserts(ns(StringBuilder) *sb, size_t index, const char *str) {
@@ -247,7 +245,7 @@ static const char *_stringbuilder_to_string(const ns(StringBuilder) *sb) {
     ListNode *current = sb->chars->head->next;
     size_t i = 0;
     while (Lists.has_next(sb->chars, current)) {
-        str[i++] = *((char *)current->value);
+        str[i++] = current->value.ch;
         current = current->next;
     }
 
