@@ -2,34 +2,35 @@
 
 #include "../funcs/funcs.h"
 #include "../ns.h"
+#include "../types/types.h"
 
 #include <string.h>
 #include <stddef.h>
 #include <stdlib.h>
 
 typedef struct ns(IArray) {
-    void *items;
+    ns(any) *items;
     size_t length;
     size_t capacity;
-    size_t item_size;
+    // size_t item_size;
 } ns(IArray);
 
 typedef struct ns(IArrayExtensions) {
-    func(ns(IArray)*, init, size_t item_size, size_t initial_length);
+    func(ns(IArray)*, init, size_t initial_length);
     func(void, destroy, ns(IArray) *array);
 
-    func(bool, append, ns(IArray) *array, void *value);
-    func(bool, prepend, ns(IArray) *array, void *value);
+    func(bool, append, ns(IArray) *array, ns(any) value);
+    func(bool, prepend, ns(IArray) *array, ns(any) value);
 
-    func(bool, set, ns(IArray) *array, size_t index, void *value);
-    func(bool, get, const ns(IArray) *array, size_t index, void *out_value);
+    func(bool, set, ns(IArray) *array, size_t index, ns(any) value);
+    func(bool, get, const ns(IArray) *array, size_t index, ns(any) *out_value);
     func(bool, remove, ns(IArray) *array, size_t index);
     
     func(void, clear, ns(IArray) *array);  
     func(ns(IArray)*, copy, const ns(IArray) *array);
 } ns(IArrayExtensions);
 
-ns(IArray) *_default_iarray_init(size_t item_size, size_t initial_length);
+ns(IArray) *_default_iarray_init(size_t initial_length);
 void _default_iarray_destroy(ns(IArray) *array);
 
 void _default_iarray_clear(ns(IArray) *array);
@@ -37,13 +38,13 @@ IArray *_default_iarray_copy(const ns(IArray) *array);
 
 #ifdef YORU_IMPL
 
-ns(IArray) *_default_iarray_init(size_t item_size, size_t initial_length) {
+ns(IArray) *_default_iarray_init(size_t initial_length) {
     ns(IArray) *coll = (ns(IArray) *)malloc(sizeof(ns(IArray)));
     if (!coll) {
         return NULL;
     }
 
-    size_t capacity = item_size * initial_length;
+    size_t capacity = sizeof(ns(any)) * initial_length;
     void *items = malloc(capacity);
     if (!items) {
         free(coll);
@@ -53,7 +54,7 @@ ns(IArray) *_default_iarray_init(size_t item_size, size_t initial_length) {
     coll->items = items;
     coll->length = 0;
     coll->capacity = capacity;
-    coll->item_size = item_size;
+    // coll->item_size = item_size;
     return coll;
 }
 
@@ -98,7 +99,7 @@ ns(IArray) *_default_iarray_copy(const ns(IArray) *array) {
     memcpy(items_copy, array->items, array->capacity);
     copy->items = items_copy;
     copy->capacity = array->capacity;
-    copy->item_size = array->item_size;
+    // copy->item_size = array->item_size;
     copy->length = array->length;
     return copy;
 }

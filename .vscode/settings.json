@@ -35,6 +35,12 @@
         "util.h": "c",
         "futures.h": "c",
         "stdio.h": "c",
-        "arena.h": "c"
+        "arena.h": "c",
+        "optional": "c",
+        "functional": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "string.h": "c"
     }
 }

@@ -2,6 +2,7 @@
 
 #include "../iarray.h"
 #include "../../ns.h"
+#include "../../types/types.h"
 
 #include <stddef.h>
 #include <stdlib.h>
@@ -9,11 +10,11 @@
 
 typedef ns(IArray) ns(Vector);
 
-static bool _vector_append(ns(IArray) *array, void *value);
-static bool _vector_prepend(ns(IArray) *array, void *value);
+static bool _vector_append(ns(IArray) *array, ns(any) value);
+static bool _vector_prepend(ns(IArray) *array, ns(any) value);
 
-static bool _vector_get(const ns(IArray) *array, size_t index, void *out_value);
-static bool _vector_set(ns(IArray) *array, size_t index, void *out_value);
+static bool _vector_get(const ns(IArray) *array, size_t index, ns(any) *out_value);
+static bool _vector_set(ns(IArray) *array, size_t index, ns(any) value);
 static bool _vector_remove(ns(IArray) *array, size_t index);
 
 const ns(IArrayExtensions) ns(Vectors) = {
@@ -36,7 +37,7 @@ const ns(IArrayExtensions) ns(Vectors) = {
 
 static ns(IArray) *_resize_vec_if_needed_append_or_prepend(ns(IArray) *array, size_t additional_items) {
     size_t items_after_append = additional_items + array->length;
-    size_t max_items = array->capacity / array->item_size;
+    size_t max_items = array->capacity / sizeof(ns(any));
 
     if (items_after_append >= max_items) {
         size_t new_capacity = 2 * array->capacity;
@@ -52,42 +53,41 @@ static ns(IArray) *_resize_vec_if_needed_append_or_prepend(ns(IArray) *array, si
     return array;
 }
 
-static bool _vector_append(ns(IArray) *array, void *value) {
+static bool _vector_append(ns(IArray) *array, ns(any) value) {
     if (!array) return false;
     size_t index = array->length;
     array = _resize_vec_if_needed_append_or_prepend(array, 1);
-    void *dest = array->items + array->item_size * index;
-    memcpy(dest, value, array->item_size);
+    array->items[index] = value;
     ++array->length;
     return true;
 }
 
-static bool _vector_prepend(ns(IArray) *array, void *value) {
+static bool _vector_prepend(ns(IArray) *array, ns(any) value) {
     if (!array) return false;
     array = _resize_vec_if_needed_append_or_prepend(array, 1);
-    memmove(array->items + array->item_size, array->items, array->item_size * array->length);
-    memcpy(array->items, value, array->item_size);
+    memmove(array->items + sizeof(ns(any)), array->items, sizeof(ns(any)) * array->length);
+    array->items[0] = value;
     ++array->length;
     return true;
 }
 
-static bool _vector_get(const ns(IArray) *array, size_t index, void *out_value) {
+static bool _vector_get(const ns(IArray) *array, size_t index, ns(any) *out_value) {
     if (!array || index >= array->length) return false;
-    memcpy(out_value, array->items + array->item_size * index, array->item_size);
+    *out_value = array->items[index];
     return true;
 }
 
-static bool _vector_set(ns(IArray) *array, size_t index, void *out_value) {
+static bool _vector_set(ns(IArray) *array, size_t index, ns(any) value) {
     if (!array || index >= array->length) return false;
-    memcpy(array->items + array->item_size * index, out_value, array->item_size);
+    array->items[index] = value;
     return true;
 }
 
 static bool _vector_remove(ns(IArray) *array, size_t index) {
     if (!array || index >= array->length) return false;
-    void *dest = array->items + array->item_size * index;
-    memset(dest, 0, array->item_size);
-    memmove(dest, dest + array->item_size, array->item_size * (array->length - index - 1));
+    void *dest = array->items + sizeof(ns(any)) * index;
+    memset(dest, 0, sizeof(ns(any)));
+    memmove(dest, dest + sizeof(ns(any)), sizeof(ns(any)) * (array->length - index - 1));
     --array->length;
     return true;
 }

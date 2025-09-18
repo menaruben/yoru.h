@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../ns.h"
+
 #include <inttypes.h>
 #include <stdbool.h>
 
@@ -35,4 +37,4 @@ typedef union {
     char ch;
     cstr str;
     void *ptr;
-} any;
+} ns(any);
