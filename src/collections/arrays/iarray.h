@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../funcs/funcs.h"
-#include "../ns.h"
-#include "../types/types.h"
+#include "../../funcs/funcs.h"
+#include "../../ns.h"
+#include "../../types/types.h"
 
 #include <string.h>
 #include <stddef.h>

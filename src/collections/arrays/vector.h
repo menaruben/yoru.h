@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../iarray.h"
+#include "iarray.h"
 #include "../../ns.h"
 #include "../../types/types.h"
 

@@ -42,6 +42,8 @@
         "type_traits": "c",
         "utility": "c",
         "string.h": "c",
-        "random": "c"
+        "random": "c",
+        "imap.h": "c",
+        "hashmap.h": "c"
     }
 }

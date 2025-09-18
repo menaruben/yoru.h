@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../ns.h"
-#include "../funcs/funcs.h"
+#include "../../ns.h"
+#include "../../funcs/funcs.h"
 
 typedef enum {
     MAP_COLLISION_STRATEGY_PANIC,

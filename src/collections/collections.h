@@ -1,12 +1,12 @@
 #pragma once
 
-#include "iarray.h"
-#include "vector/vector.h"
+#include "arrays/iarray.h"
+#include "arrays/vector.h"
 
-#include "imap.h"
-#include "hashmap/hashmap.h"
+#include "maps/imap.h"
+#include "maps/hashmap.h"
 
-#include "trie/trie.h"
+#include "trees/trie.h"
 
-#include "ilist.h"
-#include "list/list.h"
+#include "lists/ilist.h"
+#include "lists/list.h"

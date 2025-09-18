@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../imap.h"
+#include "imap.h"
 #include "../../hash/hash.h"
 #include "../../util/util.h"
 
