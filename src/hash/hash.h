@@ -6,7 +6,7 @@
 
 uint64_t ns(hash_djb2)(const char *str);
 
-#ifdef YORU_IMPLEMENTATION
+#ifdef YORU_IMPL
 
 uint64_t ns(hash_djb2)(const char *str) {
     uint64_t hash = 5381;

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../ns.h"
+#include "../funcs/funcs.h"
+
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
@@ -12,32 +14,26 @@ typedef struct ns(String) {
 } ns(String);
 
 typedef struct StringExtensions {
-    const ns(String) (*empty)();
-    const ns(String) (*from_cstr)(const char *cstr);
-    const bool (*add)(const ns(String) a, const ns(String) b, ns(String) *out_string);
+    func(const ns(String), new, const char *cstr);
+    func(const ns(String), format, const char *fmt, ...);
+    func(bool, concat, const ns(String) a, const ns(String) b, ns(String) *out_string);
 } ns(StringExtensions);
 
-static const ns(String) empty();
-static const ns(String) string_from_cstr(const char *cstr);
-static const bool string_concat(const ns(String) a, const ns(String) b, ns(String) *out_string);
+static const ns(String) new_str(const char *cstr);
+static bool string_concat(const ns(String) a, const ns(String) b, ns(String) *out_string);
 
 const ns(StringExtensions) Strings = {
-    .empty = empty,
-    .from_cstr = string_from_cstr,
-    .add = string_concat,
+    .new = new_str,
+    .concat = string_concat,
 };
 
-#ifdef YORU_IMPLEMENTATION
+#ifdef YORU_IMPL
 
-static const ns(String) empty() {
-    return (ns(String)){.cstr = {0}, .length = 0};
-}
-
-static const ns(String) string_from_cstr(const char *cstr) {
+static const ns(String) new_str(const char *cstr) {
     return (ns(String)){.cstr = cstr, .length = strlen(cstr)};
 }
 
-static const bool string_concat(const ns(String) a, const ns(String) b, ns(String) *out_string) {
+static bool string_concat(const ns(String) a, const ns(String) b, ns(String) *out_string) {
     size_t new_length = a.length + b.length;
     char *new_str = malloc(new_length+1);
     if (!new_str) {

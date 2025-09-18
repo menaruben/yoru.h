@@ -19,7 +19,7 @@ bool ns(trie_set)(ns(Trie) *trie, const char *key, void *value);
 bool ns(trie_get)(ns(Trie) *trie, const char *key, void **out_value);
 void ns(trie_free)(ns(Trie) *trie);
 
-#ifdef YORU_IMPLEMENTATION
+#ifdef YORU_IMPL
 
 static TrieNode *__trie_find_node__(ns(Trie) *trie, const char *key) {
     TrieNode *node = trie->root;

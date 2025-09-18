@@ -41,7 +41,7 @@ void ns(future_cancel)(ns(Future) *future);
 void ns(future_destroy)(ns(Future) *future);
 void *ns(future_thread_wrapper)(void *context);
 
-#ifdef YORU_IMPLEMENTATION
+#ifdef YORU_IMPL
 #if YORU_PLATFORM_UNIX
 void ns(future_init)(ns(Future) *future, void *(*callback)(void *), void *args)
 {
@@ -175,4 +175,4 @@ void *ns(future_thread_wrapper)(void *context)
 #error "Futures are currently only supported on POSIX and Windows systems."
 #endif
 
-#endif // YORU_IMPLEMENTATION
+#endif // YORU_IMPL

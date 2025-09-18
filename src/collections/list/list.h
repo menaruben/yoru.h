@@ -5,6 +5,7 @@
 
 #include <stddef.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef ns(IList) ns(LinkedList);
 
@@ -35,7 +36,7 @@ const ns(IListExtensions) ns(Lists) = {
     .has_next = _list_node_has_next,
 };
 
-#ifdef YORU_IMPLEMENTATION
+#ifdef YORU_IMPL
 
 static ns(IList) *_list_init() {
     ns(ListNode) *head = (ListNode *)malloc(sizeof(ns(ListNode)));

@@ -30,7 +30,7 @@ const ns(IMapExtensions) ns(HashMaps) = {
     .get = _hashmap_get
 };
 
-#ifdef YORU_IMPLEMENTATION
+#ifdef YORU_IMPL
 
 static inline bool _hashmap_index_not_set(ns(KeyValuePair) *kvps, size_t index) {
     return kvps[index].key == NULL;

@@ -5,6 +5,7 @@
 
 #include <string.h>
 #include <stddef.h>
+#include <stdlib.h>
 
 typedef struct ns(IArray) {
     void *items;
@@ -34,7 +35,7 @@ void _default_iarray_destroy(ns(IArray) *array);
 void _default_iarray_clear(ns(IArray) *array);
 IArray *_default_iarray_copy(const ns(IArray) *array);
 
-#ifdef YORU_IMPLEMENTATION
+#ifdef YORU_IMPL
 
 ns(IArray) *_default_iarray_init(size_t item_size, size_t initial_length) {
     ns(IArray) *coll = (ns(IArray) *)malloc(sizeof(ns(IArray)));
@@ -102,4 +103,4 @@ ns(IArray) *_default_iarray_copy(const ns(IArray) *array) {
     return copy;
 }
 
-#endif // YORU_IMPLEMENTATION
+#endif // YORU_IMPL

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "ns.h"
 #include "platforms.h"
 

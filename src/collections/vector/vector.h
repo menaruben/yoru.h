@@ -32,7 +32,7 @@ const ns(IArrayExtensions) ns(Vectors) = {
 };
 
 
-#ifdef YORU_IMPLEMENTATION
+#ifdef YORU_IMPL
 
 static ns(IArray) *_resize_vec_if_needed_append_or_prepend(ns(IArray) *array, size_t additional_items) {
     size_t items_after_append = additional_items + array->length;
@@ -92,4 +92,4 @@ static bool _vector_remove(ns(IArray) *array, size_t index) {
     return true;
 }
 
-#endif // YORU_IMPLEMENTATION
+#endif // YORU_IMPL

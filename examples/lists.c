@@ -1,4 +1,4 @@
-#define YORU_IMPLEMENTATION
+#define YORU_IMPL
 #define YORU_STRIP_NAMESPACE
 #include "../src/yoru.h"
 

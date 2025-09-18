@@ -1,6 +1,7 @@
 #pragma once
 
 #include <inttypes.h>
+#include <stdbool.h>
 
 typedef int8_t i8;
 typedef int16_t i16;
@@ -18,3 +19,20 @@ typedef double f64;
 typedef void* anyptr;
 
 typedef const char* cstr;
+
+typedef union {
+    bool boolean;
+    i8 i8;
+    i16 i16;
+    i32 i32;
+    i64 i64;
+    u8 u8;
+    u16 u16;
+    u32 u32;
+    u64 u64;
+    f32 f32;
+    f64 f64;
+    char ch;
+    cstr str;
+    void *ptr;
+} any;

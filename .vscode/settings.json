@@ -23,6 +23,18 @@
         "hash.h": "c",
         "types.h": "c",
         "collections.h": "c",
-        "trie.h": "c"
+        "trie.h": "c",
+        "system_error": "c",
+        "ilist.h": "c",
+        "list.h": "c",
+        "initializer_list": "cpp",
+        "charconv": "cpp",
+        "cstdlib": "cpp",
+        "memutil.h": "c",
+        "iallocators.h": "c",
+        "util.h": "c",
+        "futures.h": "c",
+        "stdio.h": "c",
+        "arena.h": "c"
     }
 }
