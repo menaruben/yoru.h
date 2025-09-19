@@ -20,8 +20,8 @@ typedef ns(IMap) ns(HashMap);
 
 static ns(IMap) *_hashmap_init(ns(MapCollisionStrategy) strategy, size_t initial_bucket_count);
 static void _hashmap_destroy(ns(IMap) *map);
-static bool _hashmap_set(ns(IMap) *map, const char *key, void *value);
-static bool _hashmap_get(const ns(IMap) *map, const char *key, void **out_value);
+static bool _hashmap_set(ns(IMap) *map, const char *key, ns(any) value);
+static bool _hashmap_get(const ns(IMap) *map, const char *key, ns(any) *out_value);
 
 const ns(IMapExtensions) ns(HashMaps) = {
     .init = _hashmap_init,
@@ -114,7 +114,7 @@ static void _hashmap_destroy(ns(IMap) *map) {
     free(map);
 }
 
-static bool _hashmap_set(ns(IMap) *map, const char *key, void *value) {
+static bool _hashmap_set(ns(IMap) *map, const char *key, ns(any) value) {
     size_t max_items = map->capacity / sizeof(ns(KeyValuePair));
     f64 load_factor = (map->count + 1) / (f64)max_items;
 
@@ -210,7 +210,7 @@ static bool _hashmap_set(ns(IMap) *map, const char *key, void *value) {
     return true;
 }
 
-static bool _hashmap_get(const ns(IMap) *map, const char *key, void **out_value) {
+static bool _hashmap_get(const ns(IMap) *map, const char *key, ns(any) *out_value) {
     size_t max_items = map->capacity / sizeof(ns(KeyValuePair));
     uint64_t index = ns(hash_djb2)(key) % max_items;
 

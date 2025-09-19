@@ -2,6 +2,7 @@
 
 #include "../../ns.h"
 #include "../../funcs/funcs.h"
+#include "../../types/types.h"
 
 typedef enum {
     MAP_COLLISION_STRATEGY_PANIC,
@@ -15,7 +16,7 @@ typedef enum {
 
 typedef struct ns(KeyValuePair) {
     const char *key;
-    void *value;
+    ns(any) value;
 } ns(KeyValuePair);
 
 typedef struct ns(IMap) {
@@ -28,6 +29,6 @@ typedef struct ns(IMap) {
 typedef struct ns(IMapExtensions) {
     func(ns(IMap) *, init, ns(MapCollisionStrategy) strategy, size_t initial_bucket_count);
     func(void, destroy, ns(IMap) *map);
-    func(bool, set, ns(IMap) *map, const char *key, void *value);
-    func(bool, get, const ns(IMap) *map, const char *key, void **out_value);
+    func(bool, set, ns(IMap) *map, const char *key, ns(any) value);
+    func(bool, get, const ns(IMap) *map, const char *key, ns(any) *out_value);
 } ns(IMapExtensions);

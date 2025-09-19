@@ -244,7 +244,7 @@ static const char *_stringbuilder_to_string(const ns(StringBuilder) *sb) {
 
     ListNode *current = sb->chars->head->next;
     size_t i = 0;
-    while (Lists.has_next(sb->chars, current)) {
+    while (current != sb->chars->head) {
         str[i++] = current->value.ch;
         current = current->next;
     }

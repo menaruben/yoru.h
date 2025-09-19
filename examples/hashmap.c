@@ -9,29 +9,28 @@ int main() {
         return 1;
     }
 
-    if (!HashMaps.set(map, "name", "Alice")) {
+    if (!HashMaps.set(map, "name", (any){.str = "Alice"})) {
         printf("Failed to set key-value pair\n");
         HashMaps.destroy(map);
         return 1;
     }
     
-    int age = 30;
-    if (!HashMaps.set(map, "age", &age)) {
+    if (!HashMaps.set(map, "age", (any){.i32 = 30})) {
         printf("Failed to set key-value pair\n");
         HashMaps.destroy(map);
         return 1;
     }
 
-    char *name; 
-    if (HashMaps.get(map, "name", (void**)&name)) {
-        printf("Name: %s\n", name);
+    any name_val; 
+    if (HashMaps.get(map, "name", &name_val)) {
+        printf("Name: %s\n", name_val.str);
     } else {
         printf("Name not found\n");
     }
 
-    int *retrieved_age;
-    if (HashMaps.get(map, "age", (void**)&retrieved_age)) {
-        printf("Age: %d\n", *retrieved_age);
+    any age_val;
+    if (HashMaps.get(map, "age", &age_val)) {
+        printf("Age: %d\n", age_val.i32);
     } else {
         printf("Age not found\n");
     }

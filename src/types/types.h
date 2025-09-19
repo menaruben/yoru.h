@@ -38,3 +38,20 @@ typedef union {
     cstr str;
     void *ptr;
 } ns(any);
+
+typedef enum {
+    TYPE_TAG_BOOL = 0,
+    TYPE_TAG_I8,
+    TYPE_TAG_I16,
+    TYPE_TAG_I32,
+    TYPE_TAG_I64,
+    TYPE_TAG_U8,
+    TYPE_TAG_U16,
+    TYPE_TAG_U32,
+    TYPE_TAG_U64,
+    TYPE_TAG_F32,
+    TYPE_TAG_F64,
+    TYPE_TAG_CHAR,
+    TYPE_TAG_CSTR,
+    TYPE_TAG_PTR,
+} ns(TypeTag);
