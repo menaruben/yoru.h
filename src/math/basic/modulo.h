@@ -1,14 +1,15 @@
 #pragma once
 
 #include "../../ns.h"
+#include "../../types/types.h"
 
 #include <stddef.h>
 
-size_t ns(modulo)(size_t a, size_t b);
+i64 ns(modulo)(i64 a, i64 b);
 
 #ifdef YORU_IMPL
 
-size_t ns(modulo)(size_t a, size_t b) {
+i64 ns(modulo)(i64 a, i64 b) {
     if (a == 0 || b <= 0) {
         return 0;
     }
@@ -17,7 +18,7 @@ size_t ns(modulo)(size_t a, size_t b) {
         a += b;
     }
 
-    while (a >= b) {
+    while (a > 0 && a >= b) {
         a -= b;
     }
 
