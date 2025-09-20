@@ -17,15 +17,17 @@ typedef struct ns(SizedPtrExtensions) {
     func(bool, claim, ns(SizedPtr) *sptr, size_t size, ns(SizedPtr) *out_ptr);
 } ns(SizedPtrExtensions);
 
-static bool _sptr_claim_ptr(ns(SizedPtr) *sptr, size_t size, ns(SizedPtr) *out_ptr);
+bool ns(sizedptr_claim)(ns(SizedPtr) *sptr, size_t size, ns(SizedPtr) *out_ptr);
 
+#ifndef YORU_DISABLE_METHOD_TABLES
 const ns(SizedPtrExtensions) ns(SizedPtrs) = {
-    .claim = _sptr_claim_ptr,  
+    .claim = ns(sizedptr_claim),  
 };
+#endif
 
 #ifdef YORU_IMPL
 
-static bool _sptr_claim_ptr(ns(SizedPtr) *sptr, size_t size, ns(SizedPtr) *out_ptr) {
+bool ns(sizedptr_claim)(ns(SizedPtr) *sptr, size_t size, ns(SizedPtr) *out_ptr) {
     if (!sptr) {
         return false;
     }

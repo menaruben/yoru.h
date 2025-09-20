@@ -18,17 +18,19 @@ typedef ns(IMap) ns(HashMap);
 
 #define HASHMAP_DEFAULT_COLLISION_STRATEGY MAP_COLLISION_STRATEGY_QUADRATIC_PROBING
 
-static ns(IMap) *_hashmap_init(ns(MapCollisionStrategy) strategy, size_t initial_bucket_count);
-static void _hashmap_destroy(ns(IMap) *map);
-static bool _hashmap_set(ns(IMap) *map, const char *key, ns(any) value);
-static bool _hashmap_get(const ns(IMap) *map, const char *key, ns(any) *out_value);
+ns(IMap) *ns(hashmap_init)(ns(MapCollisionStrategy) strategy, size_t initial_bucket_count);
+void ns(hashmap_destroy)(ns(IMap) *map);
+bool ns(hashmap_set)(ns(IMap) *map, const char *key, ns(any) value);
+bool ns(hashmap_get)(const ns(IMap) *map, const char *key, ns(any) *out_value);
 
+#ifndef YORU_DISABLE_METHOD_TABLES
 const ns(IMapExtensions) ns(HashMaps) = {
-    .init = _hashmap_init,
-    .destroy = _hashmap_destroy,
-    .set = _hashmap_set,
-    .get = _hashmap_get
+    .init = ns(hashmap_init),
+    .destroy = ns(hashmap_destroy),
+    .set = ns(hashmap_set),
+    .get = ns(hashmap_get)
 };
+#endif
 
 #ifdef YORU_IMPL
 
@@ -36,7 +38,7 @@ static inline bool _hashmap_index_not_set(ns(KeyValuePair) *kvps, size_t index) 
     return kvps[index].key == NULL;
 }
 
-static ns(IMap) *_hashmap_rehash(ns(IMap) *map) {
+ns(IMap) *_hashmap_rehash(ns(IMap) *map) {
     size_t new_capacity = 2 * map->capacity; // capacity stored in bytes
     size_t new_max_item_count = new_capacity / sizeof(ns(KeyValuePair));
 
@@ -59,7 +61,7 @@ static ns(IMap) *_hashmap_rehash(ns(IMap) *map) {
 
         ns(KeyValuePair) kvp = old_kvps[i];
 
-        if (!_hashmap_set(map, kvp.key, kvp.value)) {
+        if (!ns(hashmap_set)(map, kvp.key, kvp.value)) {
             free(new_kvps);
             map->key_value_pairs = old_kvps;
             map->capacity = old_capacity;
@@ -73,7 +75,7 @@ static ns(IMap) *_hashmap_rehash(ns(IMap) *map) {
     return map;
 }
 
-static ns(IMap) *_hashmap_init(ns(MapCollisionStrategy) strategy, size_t initial_bucket_count) {
+ns(IMap) *ns(hashmap_init)(ns(MapCollisionStrategy) strategy, size_t initial_bucket_count) {
     HashMap *map = malloc(sizeof(HashMap));
     if (!map) {
         return NULL;
@@ -100,7 +102,7 @@ static ns(IMap) *_hashmap_init(ns(MapCollisionStrategy) strategy, size_t initial
     return map;
 }
 
-static void _hashmap_destroy(ns(IMap) *map) {
+void ns(hashmap_destroy)(ns(IMap) *map) {
     if (!map) return;
     if (map->key_value_pairs) {
         size_t max_items = map->capacity / sizeof(ns(KeyValuePair));
@@ -114,7 +116,7 @@ static void _hashmap_destroy(ns(IMap) *map) {
     free(map);
 }
 
-static bool _hashmap_set(ns(IMap) *map, const char *key, ns(any) value) {
+bool ns(hashmap_set)(ns(IMap) *map, const char *key, ns(any) value) {
     size_t max_items = map->capacity / sizeof(ns(KeyValuePair));
     f64 load_factor = (map->count + 1) / (f64)max_items;
 
@@ -210,7 +212,7 @@ static bool _hashmap_set(ns(IMap) *map, const char *key, ns(any) value) {
     return true;
 }
 
-static bool _hashmap_get(const ns(IMap) *map, const char *key, ns(any) *out_value) {
+bool ns(hashmap_get)(const ns(IMap) *map, const char *key, ns(any) *out_value) {
     size_t max_items = map->capacity / sizeof(ns(KeyValuePair));
     uint64_t index = ns(hash_djb2)(key) % max_items;
 

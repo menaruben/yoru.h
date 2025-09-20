@@ -2,6 +2,7 @@
 
 #include "../platforms.h"
 #include "../ns.h"
+#include "../funcs/funcs.h"
 
 #if YORU_PLATFORM_UNIX
 #include <pthread.h>
@@ -40,6 +41,23 @@ void *ns(future_await)(ns(Future) *future);
 void ns(future_cancel)(ns(Future) *future);
 void ns(future_destroy)(ns(Future) *future);
 void *ns(future_thread_wrapper)(void *context);
+
+#ifndef YORU_DISABLE_METHOD_TABLES
+typedef struct ns(IFutureExtensions) {
+    func(void, init, ns(Future) *future, void *(*callback)(void *), void *args);
+    func(void*, await, ns(Future) *future);
+    func(void, cancel, ns(Future) *future);
+    func(void, destroy, ns(Future) *future);
+} ns(IFutureExtensions);
+
+const ns(IFutureExtensions) ns(Futures) = {
+    .init = future_init,
+    .await = future_await,
+    .cancel = future_cancel,
+    .destroy = future_destroy
+};
+
+#endif
 
 #ifdef YORU_IMPL
 #if YORU_PLATFORM_UNIX

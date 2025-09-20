@@ -47,63 +47,65 @@ typedef struct ns(IStringBuilderExtensions)
     func(const char *, to_string, const ns(StringBuilder) *sb);
 } ns(IStringBuilderExtensions);
 
-static ns(StringBuilder) *_stringbuilder_init();
-static void _stringbuilder_destroy(ns(StringBuilder) *sb);
-static bool _stringbuilder_insertc(ns(StringBuilder) *sb, size_t index, char ch);
-static bool _stringbuilder_inserts(ns(StringBuilder) *sb, size_t index, const char *str);
-static bool _stringbuilder_inserti(ns(StringBuilder) *sb, size_t index, i64 i);
-static bool _stringbuilder_insertu(ns(StringBuilder) *sb, size_t index, u64 u);
-static bool _stringbuilder_insertf(ns(StringBuilder) *sb, size_t index, f64 f, size_t precision);
-static bool _stringbuilder_insertfmt(ns(StringBuilder) *sb, size_t index, const char *fmt, ...);
-static bool _stringbuilder_prependc(ns(StringBuilder) *sb, char ch);
-static bool _stringbuilder_prepends(ns(StringBuilder) *sb, const char *str);
-static bool _stringbuilder_prependi(ns(StringBuilder) *sb, i64 i);
-static bool _stringbuilder_prependu(ns(StringBuilder) *sb, u64 u);
-static bool _stringbuilder_prependf(ns(StringBuilder) *sb, f64 f, size_t precision);
-static bool _stringbuilder_prependfmt(ns(StringBuilder) *sb, const char *fmt, ...);
-static bool _stringbuilder_appendc(ns(StringBuilder) *sb, char ch);
-static bool _stringbuilder_appends(ns(StringBuilder) *sb, const char *str);
-static bool _stringbuilder_appendi(ns(StringBuilder) *sb, i64 i);
-static bool _stringbuilder_appendu(ns(StringBuilder) *sb, u64 u);
-static bool _stringbuilder_appendf(ns(StringBuilder) *sb, f64 f, size_t precision);
-static bool _stringbuilder_appendfmt(ns(StringBuilder) *sb, const char *fmt, ...);
-static size_t _stringbuilder_length(const ns(StringBuilder) *sb);
-static void _stringbuilder_clear(ns(StringBuilder) *sb);
-static const char *_stringbuilder_to_string(const ns(StringBuilder) *sb);
+static ns(StringBuilder) *ns(stringbuilder_init)();
+static void ns(stringbuilder_destroy)(ns(StringBuilder) *sb);
+static bool ns(stringbuilder_insertc)(ns(StringBuilder) *sb, size_t index, char ch);
+static bool ns(stringbuilder_inserts)(ns(StringBuilder) *sb, size_t index, const char *str);
+static bool ns(stringbuilder_inserti)(ns(StringBuilder) *sb, size_t index, i64 i);
+static bool ns(stringbuilder_insertu)(ns(StringBuilder) *sb, size_t index, u64 u);
+static bool ns(stringbuilder_insertf)(ns(StringBuilder) *sb, size_t index, f64 f, size_t precision);
+static bool ns(stringbuilder_insertfmt)(ns(StringBuilder) *sb, size_t index, const char *fmt, ...);
+static bool ns(stringbuilder_prependc)(ns(StringBuilder) *sb, char ch);
+static bool ns(stringbuilder_prepends)(ns(StringBuilder) *sb, const char *str);
+static bool ns(stringbuilder_prependi)(ns(StringBuilder) *sb, i64 i);
+static bool ns(stringbuilder_prependu)(ns(StringBuilder) *sb, u64 u);
+static bool ns(stringbuilder_prependf)(ns(StringBuilder) *sb, f64 f, size_t precision);
+static bool ns(stringbuilder_prependfmt)(ns(StringBuilder) *sb, const char *fmt, ...);
+static bool ns(stringbuilder_appendc)(ns(StringBuilder) *sb, char ch);
+static bool ns(stringbuilder_appends)(ns(StringBuilder) *sb, const char *str);
+static bool ns(stringbuilder_appendi)(ns(StringBuilder) *sb, i64 i);
+static bool ns(stringbuilder_appendu)(ns(StringBuilder) *sb, u64 u);
+static bool ns(stringbuilder_appendf)(ns(StringBuilder) *sb, f64 f, size_t precision);
+static bool ns(stringbuilder_appendfmt)(ns(StringBuilder) *sb, const char *fmt, ...);
+static size_t ns(stringbuilder_length)(const ns(StringBuilder) *sb);
+static void ns(stringbuilder_clear)(ns(StringBuilder) *sb);
+static const char *ns(stringbuilder_to_string)(const ns(StringBuilder) *sb);
 
-static ns(IStringBuilderExtensions) const ns(StringBuilders) = {
-    .init = _stringbuilder_init,
-    .destroy = _stringbuilder_destroy,
+#ifndef YORU_DISABLE_METHOD_TABLES
+const ns(IStringBuilderExtensions) ns(StringBuilders) = {
+    .init = ns(stringbuilder_init),
+    .destroy = ns(stringbuilder_destroy),
 
-    .insertc = _stringbuilder_insertc,
-    .inserts = _stringbuilder_inserts,
-    .inserti = _stringbuilder_inserti,
-    .insertu = _stringbuilder_insertu,
-    .insertf = _stringbuilder_insertf,
-    .insertfmt = _stringbuilder_insertfmt,
+    .insertc = ns(stringbuilder_insertc),
+    .inserts = ns(stringbuilder_inserts),
+    .inserti = ns(stringbuilder_inserti),
+    .insertu = ns(stringbuilder_insertu),
+    .insertf = ns(stringbuilder_insertf),
+    .insertfmt = ns(stringbuilder_insertfmt),
 
-    .prependc = _stringbuilder_prependc,
-    .prepends = _stringbuilder_prepends,
-    .prependi = _stringbuilder_prependi,
-    .prependu = _stringbuilder_prependu,
-    .prependf = _stringbuilder_prependf,
-    .prependfmt = _stringbuilder_prependfmt,
+    .prependc = ns(stringbuilder_prependc),
+    .prepends = ns(stringbuilder_prepends),
+    .prependi = ns(stringbuilder_prependi),
+    .prependu = ns(stringbuilder_prependu),
+    .prependf = ns(stringbuilder_prependf),
+    .prependfmt = ns(stringbuilder_prependfmt),
 
-    .appendc = _stringbuilder_appendc,
-    .appends = _stringbuilder_appends,
-    .appendi = _stringbuilder_appendi,
-    .appendu = _stringbuilder_appendu,
-    .appendf = _stringbuilder_appendf,
-    .appendfmt = _stringbuilder_appendfmt,
+    .appendc = ns(stringbuilder_appendc),
+    .appends = ns(stringbuilder_appends),
+    .appendi = ns(stringbuilder_appendi),
+    .appendu = ns(stringbuilder_appendu),
+    .appendf = ns(stringbuilder_appendf),
+    .appendfmt = ns(stringbuilder_appendfmt),
 
-    .length = _stringbuilder_length,
-    .clear = _stringbuilder_clear,
-    .to_string = _stringbuilder_to_string
+    .length = ns(stringbuilder_length),
+    .clear = ns(stringbuilder_clear),
+    .to_string = ns(stringbuilder_to_string)
 };
+#endif
 
 #ifdef YORU_IMPL
 
-static ns(StringBuilder) *_stringbuilder_init() {
+static ns(StringBuilder) *ns(stringbuilder_init)() {
     ns(StringBuilder) *sb = (ns(StringBuilder) *)malloc(sizeof(ns(StringBuilder)));
     if (!sb) {
         return NULL;
@@ -118,119 +120,119 @@ static ns(StringBuilder) *_stringbuilder_init() {
     return sb;
 }
 
-static void _stringbuilder_destroy(ns(StringBuilder) *sb) {
+static void ns(stringbuilder_destroy)(ns(StringBuilder) *sb) {
     if (!sb) return;
     Lists.destroy(sb->chars);
     free(sb);
     sb = NULL;
 }
 
-static bool _stringbuilder_insertc(ns(StringBuilder) *sb, size_t index, char ch) {
+static bool ns(stringbuilder_insertc)(ns(StringBuilder) *sb, size_t index, char ch) {
     if (!sb || !sb->chars) return false;
     return Lists.insert(sb->chars, index, (any){.ch = ch});
 }
 
-static bool _stringbuilder_inserts(ns(StringBuilder) *sb, size_t index, const char *str) {
+static bool ns(stringbuilder_inserts)(ns(StringBuilder) *sb, size_t index, const char *str) {
     if (!sb || !sb->chars || !str) return false;
     size_t len = 0;
     while (str[len] != '\0') ++len;
 
     for (size_t i = 0; i < len; ++i) {
-        if (! _stringbuilder_insertc(sb, index + i, str[i])) {
+        if (! ns(stringbuilder_insertc)(sb, index + i, str[i])) {
             return false;
         }
     }
     return true;
 }
 
-static bool _stringbuilder_inserti(ns(StringBuilder) *sb, size_t index, i64 i) {
+static bool ns(stringbuilder_inserti)(ns(StringBuilder) *sb, size_t index, i64 i) {
     if (!sb || !sb->chars) return false;
     char buffer[21]; // enough to hold -2^63 and null terminator
     int written = snprintf(buffer, sizeof(buffer), "%lld", (long long)i);
     if (written < 0) return false;
-    return _stringbuilder_inserts(sb, index, buffer);
+    return ns(stringbuilder_inserts)(sb, index, buffer);
 }
 
-static bool _stringbuilder_insertu(ns(StringBuilder) *sb, size_t index, u64 u) {
+static bool ns(stringbuilder_insertu)(ns(StringBuilder) *sb, size_t index, u64 u) {
     if (!sb || !sb->chars) return false;
     char buffer[21]; // enough to hold 2^64 - 1 and null terminator
     int written = snprintf(buffer, sizeof(buffer), "%llu", (unsigned long long)u);
     if (written < 0) return false;
-    return _stringbuilder_inserts(sb, index, buffer);
+    return ns(stringbuilder_inserts)(sb, index, buffer);
 }
 
-static bool _stringbuilder_insertf(ns(StringBuilder) *sb, size_t index, f64 f, size_t precision) {
+static bool ns(stringbuilder_insertf)(ns(StringBuilder) *sb, size_t index, f64 f, size_t precision) {
     if (!sb || !sb->chars) return false;
     if (precision > 20) precision = 20; // limit precision to avoid excessive length
     char buffer[32]; // enough to hold most floating point numbers with precision and null terminator
     int written = snprintf(buffer, sizeof(buffer), "%.*f", (int)precision, f);
     if (written < 0) return false;
-    return _stringbuilder_inserts(sb, index, buffer);
+    return ns(stringbuilder_inserts)(sb, index, buffer);
 }
 
-static bool _stringbuilder_insertfmt(ns(StringBuilder) *sb, size_t index, const char *fmt, ...) {
-    TODO("_stringbuilder_insertfmt");
+static bool ns(stringbuilder_insertfmt)(ns(StringBuilder) *sb, size_t index, const char *fmt, ...) {
+    TODO("ns(stringbuilder_insertfmt)");
 }
 
-static bool _stringbuilder_prependc(ns(StringBuilder) *sb, char ch) {
-    return _stringbuilder_insertc(sb, 0, ch);
+static bool ns(stringbuilder_prependc)(ns(StringBuilder) *sb, char ch) {
+    return ns(stringbuilder_insertc)(sb, 0, ch);
 }
 
-static bool _stringbuilder_prepends(ns(StringBuilder) *sb, const char *str) {
-    return _stringbuilder_inserts(sb, 0, str);
+static bool ns(stringbuilder_prepends)(ns(StringBuilder) *sb, const char *str) {
+    return ns(stringbuilder_inserts)(sb, 0, str);
 }
 
-static bool _stringbuilder_prependi(ns(StringBuilder) *sb, i64 i) {
-    return _stringbuilder_inserti(sb, 0, i);
+static bool ns(stringbuilder_prependi)(ns(StringBuilder) *sb, i64 i) {
+    return ns(stringbuilder_inserti)(sb, 0, i);
 }
 
-static bool _stringbuilder_prependu(ns(StringBuilder) *sb, u64 u) {
-    return _stringbuilder_insertu(sb, 0, u);
+static bool ns(stringbuilder_prependu)(ns(StringBuilder) *sb, u64 u) {
+    return ns(stringbuilder_insertu)(sb, 0, u);
 }
 
-static bool _stringbuilder_prependf(ns(StringBuilder) *sb, f64 f, size_t precision) {
-    return _stringbuilder_insertf(sb, 0, f, precision);
+static bool ns(stringbuilder_prependf)(ns(StringBuilder) *sb, f64 f, size_t precision) {
+    return ns(stringbuilder_insertf)(sb, 0, f, precision);
 }
 
-static bool _stringbuilder_prependfmt(ns(StringBuilder) *sb, const char *fmt, ...) {
-    return _stringbuilder_insertfmt(sb, 0, fmt);
+static bool ns(stringbuilder_prependfmt)(ns(StringBuilder) *sb, const char *fmt, ...) {
+    return ns(stringbuilder_insertfmt)(sb, 0, fmt);
 }
 
-static bool _stringbuilder_appendc(ns(StringBuilder) *sb, char ch) {
-    return _stringbuilder_insertc(sb, sb->chars->length, ch);
+static bool ns(stringbuilder_appendc)(ns(StringBuilder) *sb, char ch) {
+    return ns(stringbuilder_insertc)(sb, sb->chars->length, ch);
 }
 
-static bool _stringbuilder_appends(ns(StringBuilder) *sb, const char *str) {
-    return _stringbuilder_inserts(sb, sb->chars->length, str);
+static bool ns(stringbuilder_appends)(ns(StringBuilder) *sb, const char *str) {
+    return ns(stringbuilder_inserts)(sb, sb->chars->length, str);
 }
 
-static bool _stringbuilder_appendi(ns(StringBuilder) *sb, i64 i) {
-    return _stringbuilder_inserti(sb, sb->chars->length, i);
+static bool ns(stringbuilder_appendi)(ns(StringBuilder) *sb, i64 i) {
+    return ns(stringbuilder_inserti)(sb, sb->chars->length, i);
 }
 
-static bool _stringbuilder_appendu(ns(StringBuilder) *sb, u64 u) {
-    return _stringbuilder_insertu(sb, sb->chars->length, u);
+static bool ns(stringbuilder_appendu)(ns(StringBuilder) *sb, u64 u) {
+    return ns(stringbuilder_insertu)(sb, sb->chars->length, u);
 }
 
-static bool _stringbuilder_appendf(ns(StringBuilder) *sb, f64 f, size_t precision) {
-    return _stringbuilder_insertf(sb, sb->chars->length, f, precision);
+static bool ns(stringbuilder_appendf)(ns(StringBuilder) *sb, f64 f, size_t precision) {
+    return ns(stringbuilder_insertf)(sb, sb->chars->length, f, precision);
 }
 
-static bool _stringbuilder_appendfmt(ns(StringBuilder) *sb, const char *fmt, ...) {
-    return _stringbuilder_insertfmt(sb, sb->chars->length, fmt);
+static bool ns(stringbuilder_appendfmt)(ns(StringBuilder) *sb, const char *fmt, ...) {
+    return ns(stringbuilder_insertfmt)(sb, sb->chars->length, fmt);
 }
 
-static size_t _stringbuilder_length(const ns(StringBuilder) *sb) {
+static size_t ns(stringbuilder_length)(const ns(StringBuilder) *sb) {
     if (!sb || !sb->chars) return 0;
     return sb->chars->length;
 }
 
-static void _stringbuilder_clear(ns(StringBuilder) *sb) {
+static void ns(stringbuilder_clear)(ns(StringBuilder) *sb) {
     if (!sb || !sb->chars) return;
     Lists.clear(sb->chars);
 }
 
-static const char *_stringbuilder_to_string(const ns(StringBuilder) *sb) {
+static const char *ns(stringbuilder_to_string)(const ns(StringBuilder) *sb) {
     if (!sb || !sb->chars) return NULL;
     size_t len = sb->chars->length;
     if (len == 0) {

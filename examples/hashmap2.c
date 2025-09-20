@@ -34,7 +34,7 @@ int main() {
         t->fst = i;
         t->snd = i * 2;
 
-        if (!HashMaps.set(map, keybuf, t)) {
+        if (!HashMaps.set(map, keybuf, (any){.ptr = t})) {
             printf("Failed to set key-value pair for key %s\n", keybuf);
             free(t);
             HashMaps.destroy(map);
@@ -44,11 +44,12 @@ int main() {
         }
     }
 
-    struct Tuple *tp;
+    any tp_value;
     for (int i = 0; i < 69; ++i) {
         char keybuf[16];
         snprintf(keybuf, sizeof(keybuf), "k%d", i);
-        if (HashMaps.get(map, keybuf, (void**)&tp)) {
+        if (HashMaps.get(map, keybuf, &tp_value)) {
+            struct Tuple *tp = (struct Tuple *)tp_value.ptr;
             printf("Found key: %s, value: (%d, %d)\n", keybuf, tp->fst, tp->snd);
         } else {
             printf("Key %s not found\n", keybuf);

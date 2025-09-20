@@ -18,30 +18,32 @@ typedef struct StringExtensions {
     func(bool, concat, const ns(String) a, const ns(String) b, ns(String) *out_string);
 } ns(StringExtensions);
 
-static const ns(String) new_str(const char *cstr);
-static bool string_concat(const ns(String) a, const ns(String) b, ns(String) *out_string);
+const ns(String) ns(string_new)(const char *cstr);
+bool ns(string_concat)(const ns(String) a, const ns(String) b, ns(String) *out_string);
 
+#ifndef YORU_DISABLE_METHOD_TABLES
 const ns(StringExtensions) Strings = {
-    .new = new_str,
-    .concat = string_concat,
+    .new = ns(string_new),
+    .concat = ns(string_concat),
 };
+#endif
 
 #ifdef YORU_IMPL
 
-static const ns(String) new_str(const char *cstr) {
+const ns(String) ns(string_new)(const char *cstr) {
     return (ns(String)){.cstr = cstr, .length = strlen(cstr)};
 }
 
-static bool string_concat(const ns(String) a, const ns(String) b, ns(String) *out_string) {
+bool ns(string_concat)(const ns(String) a, const ns(String) b, ns(String) *out_string) {
     size_t new_length = a.length + b.length;
-    char *new_str = malloc(new_length+1);
-    if (!new_str) {
+    char *ns(string_new) = malloc(new_length+1);
+    if (!ns(string_new)) {
         return false;
     }
-    new_str[new_length] = 0;
-    strncpy(new_str, a.cstr, a.length);
-    strncpy(new_str + a.length, b.cstr, b.length);
-    out_string->cstr = new_str;
+    ns(string_new)[new_length] = 0;
+    strncpy(ns(string_new), a.cstr, a.length);
+    strncpy(ns(string_new) + a.length, b.cstr, b.length);
+    out_string->cstr = ns(string_new);
     out_string->length = new_length;
     return true;
 }

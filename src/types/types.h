@@ -5,6 +5,8 @@
 #include <inttypes.h>
 #include <stdbool.h>
 
+typedef char byte;
+
 typedef int8_t i8;
 typedef int16_t i16;
 typedef int32_t i32;

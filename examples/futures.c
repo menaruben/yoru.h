@@ -44,16 +44,16 @@ int main() {
     struct CallbackArgs args1 = {.id = 1, .times = 10};
     struct CallbackArgs args2 = {.id = 2, .times = 5};
 
-    future_init(&fut1, callback, &args1);
+    Futures.init(&fut1, callback, &args1);
     sleep(DELAY_SECONDS);
-    future_init(&fut2, callback, &args2);
+    Futures.init(&fut2, callback, &args2);
 
-    struct CallbackRes *res1 = future_await(&fut1);
-    struct CallbackRes *res2 = future_await(&fut2);
+    struct CallbackRes *res1 = Futures.await(&fut1);
+    struct CallbackRes *res2 = Futures.await(&fut2);
     printf("fut1: %d\n", res1->exit);
     printf("fut2: %d\n", res2->exit);
 
-    future_destroy(&fut1);
-    future_destroy(&fut2);
+    Futures.destroy(&fut1);
+    Futures.destroy(&fut2);
     return 0;
 }

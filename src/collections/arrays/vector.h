@@ -10,30 +10,41 @@
 
 typedef ns(IArray) ns(Vector);
 
-static bool _vector_append(ns(IArray) *array, ns(any) value);
-static bool _vector_prepend(ns(IArray) *array, ns(any) value);
+bool ns(vector_append)(ns(IArray) *array, ns(any) value);
+bool ns(vector_prepend)(ns(IArray) *array, ns(any) value);
+bool ns(vector_get)(const ns(IArray) *array, size_t index, ns(any) *out_value);
+bool ns(vector_set)(ns(IArray) *array, size_t index, ns(any) value);
+bool ns(vector_remove)(ns(IArray) *array, size_t index);
+void ns(vector_clear)(ns(IArray) *array);
+ns(IArray) *ns(vector_copy)(const ns(IArray) *array);
 
-static bool _vector_get(const ns(IArray) *array, size_t index, ns(any) *out_value);
-static bool _vector_set(ns(IArray) *array, size_t index, ns(any) value);
-static bool _vector_remove(ns(IArray) *array, size_t index);
-
+#ifndef YORU_DISABLE_METHOD_TABLES
 const ns(IArrayExtensions) ns(Vectors) = {
     .init = _default_iarray_init,
     .destroy = _default_iarray_destroy,
 
-    .append = _vector_append,
-    .prepend = _vector_prepend,
+    .append = ns(vector_append),
+    .prepend = ns(vector_prepend),
 
-    .set = _vector_set,
-    .get = _vector_get,
-    .remove = _vector_remove,
+    .set = ns(vector_set),
+    .get = ns(vector_get),
+    .remove = ns(vector_remove),
 
-    .clear = _default_iarray_clear,
-    .copy = _default_iarray_copy
+    .clear = ns(vector_clear),
+    .copy = ns(vector_copy)
 };
+#endif
 
 
 #ifdef YORU_IMPL
+
+void ns(vector_clear)(ns(IArray) *array) {
+    _default_iarray_clear(array);
+}
+
+ns(IArray) *ns(vector_copy)(const ns(IArray) *array) {
+    return _default_iarray_copy(array);
+}
 
 static ns(IArray) *_resize_vec_if_needed_append_or_prepend(ns(IArray) *array, size_t additional_items) {
     size_t items_after_append = additional_items + array->length;
@@ -53,7 +64,7 @@ static ns(IArray) *_resize_vec_if_needed_append_or_prepend(ns(IArray) *array, si
     return array;
 }
 
-static bool _vector_append(ns(IArray) *array, ns(any) value) {
+bool ns(vector_append)(ns(IArray) *array, ns(any) value) {
     if (!array) return false;
     size_t index = array->length;
     array = _resize_vec_if_needed_append_or_prepend(array, 1);
@@ -62,7 +73,7 @@ static bool _vector_append(ns(IArray) *array, ns(any) value) {
     return true;
 }
 
-static bool _vector_prepend(ns(IArray) *array, ns(any) value) {
+bool ns(vector_prepend)(ns(IArray) *array, ns(any) value) {
     if (!array) return false;
     array = _resize_vec_if_needed_append_or_prepend(array, 1);
     memmove(array->items + sizeof(ns(any)), array->items, sizeof(ns(any)) * array->length);
@@ -71,19 +82,19 @@ static bool _vector_prepend(ns(IArray) *array, ns(any) value) {
     return true;
 }
 
-static bool _vector_get(const ns(IArray) *array, size_t index, ns(any) *out_value) {
+bool ns(vector_get)(const ns(IArray) *array, size_t index, ns(any) *out_value) {
     if (!array || index >= array->length) return false;
     *out_value = array->items[index];
     return true;
 }
 
-static bool _vector_set(ns(IArray) *array, size_t index, ns(any) value) {
+bool ns(vector_set)(ns(IArray) *array, size_t index, ns(any) value) {
     if (!array || index >= array->length) return false;
     array->items[index] = value;
     return true;
 }
 
-static bool _vector_remove(ns(IArray) *array, size_t index) {
+bool ns(vector_remove)(ns(IArray) *array, size_t index) {
     if (!array || index >= array->length) return false;
     void *dest = array->items + sizeof(ns(any)) * index;
     memset(dest, 0, sizeof(ns(any)));

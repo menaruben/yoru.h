@@ -10,36 +10,38 @@
 
 typedef ns(IList) ns(LinkedList);
 
-static ns(IList) *_list_init();
-static void _list_destroy(ns(IList) *list);
-static bool _list_append(ns(IList) *list, ns(any) value);
-static bool _list_prepend(ns(IList) *list, ns(any) value);
-static bool _list_set(ns(IList) *list, size_t index, ns(any) value);
-static bool _list_get(const ns(IList) *list, size_t index, ns(any) *out_value);
-static bool _list_insert(ns(IList) *list, size_t index, ns(any) value);
-static bool _list_remove(ns(IList) *list, size_t index);
-static void _list_clear(ns(IList) *list);
-static bool _list_node_has_next(const ns(IList) *list, const ns(ListNode) *node);
+ns(IList) *ns(list_init)();
+void ns(list_destroy)(ns(IList) *list);
+bool ns(list_append)(ns(IList) *list, ns(any) value);
+bool ns(list_prepend)(ns(IList) *list, ns(any) value);
+bool ns(list_set)(ns(IList) *list, size_t index, ns(any) value);
+bool ns(list_get)(const ns(IList) *list, size_t index, ns(any) *out_value);
+bool ns(list_insert)(ns(IList) *list, size_t index, ns(any) value);
+bool ns(list_remove)(ns(IList) *list, size_t index);
+void ns(list_clear)(ns(IList) *list);
+bool ns(list_node_has_next)(const ns(IList) *list, const ns(ListNode) *node);
 
+#ifndef YORU_DISABLE_METHOD_TABLES
 const ns(IListExtensions) ns(Lists) = {
-    .init = _list_init,
-    .destroy = _list_destroy,
+    .init = ns(list_init),
+    .destroy = ns(list_destroy),
 
-    .append = _list_append,
-    .prepend = _list_prepend,
+    .append = ns(list_append),
+    .prepend = ns(list_prepend),
 
-    .set = _list_set,
-    .get = _list_get,
-    .insert = _list_insert,
-    .remove = _list_remove,
+    .set = ns(list_set),
+    .get = ns(list_get),
+    .insert = ns(list_insert),
+    .remove = ns(list_remove),
 
-    .clear = _list_clear,
-    .has_next = _list_node_has_next,
+    .clear = ns(list_clear),
+    .has_next = ns(list_node_has_next),
 };
+#endif
 
 #ifdef YORU_IMPL
 
-static ns(IList) *_list_init() {
+ns(IList) *ns(list_init)() {
     ns(ListNode) *head = (ListNode *)malloc(sizeof(ns(ListNode)));
     if (!head) {
         return NULL;
@@ -58,15 +60,15 @@ static ns(IList) *_list_init() {
     return list;
 }
 
-static void _list_destroy(ns(IList) *list) {
+void ns(list_destroy)(ns(IList) *list) {
     if (!list || !list->head) return;
-    _list_clear(list);
+    ns(list_clear)(list);
     free(list->head);
     free(list);
     list = NULL;
 }
 
-static void _list_clear(ns(IList) *list) {
+void ns(list_clear)(ns(IList) *list) {
     if (!list || !list->head) return;
     
     ns(ListNode) *head = list->head;
@@ -83,7 +85,7 @@ static void _list_clear(ns(IList) *list) {
     head->prev = head;
 }
 
-static bool _list_append(ns(IList) *list, ns(any) value) {
+bool ns(list_append)(ns(IList) *list, ns(any) value) {
     if (!list || !list->head) return false;
 
     ns(ListNode) *last = list->head->prev;
@@ -101,7 +103,7 @@ static bool _list_append(ns(IList) *list, ns(any) value) {
     return true;
 }
 
-static bool _list_prepend(ns(IList) *list, ns(any) value) {
+bool ns(list_prepend)(ns(IList) *list, ns(any) value) {
     if (!list || !list->head) return false;
 
     ns(ListNode) *first = list->head->next;
@@ -119,7 +121,7 @@ static bool _list_prepend(ns(IList) *list, ns(any) value) {
     return true;
 }
 
-static bool _list_set(ns(IList) *list, size_t index, ns(any) value) {
+bool ns(list_set)(ns(IList) *list, size_t index, ns(any) value) {
     if (!list || !list->head || index >= list->length) return false;
 
     ns(ListNode) *current = list->head->next;
@@ -131,7 +133,7 @@ static bool _list_set(ns(IList) *list, size_t index, ns(any) value) {
     return true;
 }
 
-static bool _list_get(const ns(IList) *list, size_t index, ns(any) *out_value) {
+bool ns(list_get)(const ns(IList) *list, size_t index, ns(any) *out_value) {
     if (!list || !list->head || index >= list->length) return false;
 
     ns(ListNode) *current = list->head->next;
@@ -143,7 +145,7 @@ static bool _list_get(const ns(IList) *list, size_t index, ns(any) *out_value) {
     return true;
 }
 
-static bool _list_insert(ns(IList) *list, size_t index, ns(any) value) {
+bool ns(list_insert)(ns(IList) *list, size_t index, ns(any) value) {
     if (!list || !list->head || index > list->length) return false;
 
     ns(ListNode) *new = (ns(ListNode *))malloc(sizeof(ns(ListNode)));
@@ -165,7 +167,7 @@ static bool _list_insert(ns(IList) *list, size_t index, ns(any) value) {
     return true;
 }
 
-static bool _list_remove(ns(IList) *list, size_t index) {
+bool ns(list_remove)(ns(IList) *list, size_t index) {
     if (!list || !list->head || index >= list->length) return false;
 
     ns(ListNode) *current = list->head->next;
@@ -180,7 +182,7 @@ static bool _list_remove(ns(IList) *list, size_t index) {
     return true;
 }
 
-static bool _list_node_has_next(const ns(IList) *list, const ns(ListNode) *node) {
+bool ns(list_node_has_next)(const ns(IList) *list, const ns(ListNode) *node) {
     if (!list || !list->head || !node) return false;
     return node->next != list->head;
 }

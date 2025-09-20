@@ -12,7 +12,6 @@ typedef struct ns(IArray) {
     ns(any) *items;
     size_t length;
     size_t capacity;
-    // size_t item_size;
 } ns(IArray);
 
 typedef struct ns(IArrayExtensions) {
@@ -99,7 +98,6 @@ ns(IArray) *_default_iarray_copy(const ns(IArray) *array) {
     memcpy(items_copy, array->items, array->capacity);
     copy->items = items_copy;
     copy->capacity = array->capacity;
-    // copy->item_size = array->item_size;
     copy->length = array->length;
     return copy;
 }

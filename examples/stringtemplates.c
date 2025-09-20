@@ -12,8 +12,9 @@ int main() {
     HashMaps.set(values2, "name", (any){.str = "rando"});
     HashMaps.set(values2, "age", (any){.i32 = 213231});
 
-    cstr resolved1 = string_from_template("Hello my {s:name} is {d:age}", values1);
-    cstr resolved2 = string_from_template("Hello my {s:name} is {d:age}", values2);
+    cstr tmpl = "Hello my name is {s:name} and i am {d:age} years old";
+    cstr resolved1 = string_from_template(tmpl, values1);
+    cstr resolved2 = string_from_template(tmpl, values2);
 
     printf("Resolved 1: %s\n", resolved1);
     printf("Resolved 2: %s\n", resolved2);

@@ -48,6 +48,8 @@
         "memory": "c",
         "stringbuilder.h": "c",
         "stringview.h": "c",
-        "stringtemplate.h": "c"
+        "stringtemplate.h": "c",
+        "ireader.h": "c",
+        "iwriter.h": "c"
     }
 }
