@@ -16,22 +16,27 @@
                                                                            \
   const ns(TestGroup) group_name##_test_group = {                          \
     .name = #group_name,                                                   \
-    .tests = group_name##_test_funcs,                                      \
+    .tests = (ns(TestFunc)*)group_name##_test_funcs,                       \
     .test_count = group_name##_test_count,                                 \
   }
+
 
 #define TESTING_ASSERT(cond) \
     do { \
         if (!(cond)) { \
-            return (ns(TestResult)){ .ok = false, .message = "at: " #cond }; \
+            static char _msg[256]; \
+            snprintf(_msg, sizeof(_msg), "%s:%d: in %s: Assertion failed: %s", \
+                     __FILE__, __LINE__, __func__, #cond); \
+            return (ns(TestResult)){ .ok = false, .message = _msg }; \
         } \
     } while (0)
-
 
 #define TESTING_ASSERT_EQ(expected, actual) \
     do { \
         if ((expected) != (actual)) { \
-            static const char _msg[] = "Equality Expected: " #expected ", Actual: " #actual; \
+            static char _msg[256]; \
+            snprintf(_msg, sizeof(_msg), "%s:%d: in %s: Equality Expected: %s, Actual: %s", \
+                     __FILE__, __LINE__, __func__, #expected, #actual); \
             return (ns(TestResult)){ .ok = false, .message = _msg }; \
         } \
     } while (0)
@@ -39,7 +44,9 @@
 #define TESTING_ASSERT_NEQ(value, actual) \
     do { \
         if ((value) == (actual)) { \
-            static const char _msg[] = "Inequality Expected: " #value ", Actual: " #actual; \
+            static char _msg[256]; \
+            snprintf(_msg, sizeof(_msg), "%s:%d: in %s: Inequality Expected: %s, Actual: %s", \
+                     __FILE__, __LINE__, __func__, #value, #actual); \
             return (ns(TestResult)){ .ok = false, .message = _msg }; \
         } \
     } while (0)

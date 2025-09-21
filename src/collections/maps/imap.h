@@ -4,6 +4,8 @@
 #include "../../funcs/funcs.h"
 #include "../../types/types.h"
 
+#include <stddef.h>
+
 typedef enum {
     MAP_COLLISION_STRATEGY_PANIC,
     MAP_COLLISION_STRATEGY_OVERWRITE,

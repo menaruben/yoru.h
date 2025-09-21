@@ -51,10 +51,10 @@ typedef struct ns(IFutureExtensions) {
 } ns(IFutureExtensions);
 
 const ns(IFutureExtensions) ns(Futures) = {
-    .init = future_init,
-    .await = future_await,
-    .cancel = future_cancel,
-    .destroy = future_destroy
+    .init =    ns(future_init),
+    .await =   ns(future_await),
+    .cancel =  ns(future_cancel),
+    .destroy = ns(future_destroy)
 };
 
 #endif

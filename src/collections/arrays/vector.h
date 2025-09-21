@@ -3,10 +3,12 @@
 #include "iarray.h"
 #include "../../ns.h"
 #include "../../types/types.h"
+#include "../../strings/stringtemplate.h"
 
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 typedef ns(IArray) ns(Vector);
 
@@ -17,6 +19,7 @@ bool ns(vector_set)(ns(IArray) *array, size_t index, ns(any) value);
 bool ns(vector_remove)(ns(IArray) *array, size_t index);
 void ns(vector_clear)(ns(IArray) *array);
 ns(IArray) *ns(vector_copy)(const ns(IArray) *array);
+void ns(vector_println)(const ns(IArray) *array, ns(TypeTag) type_tag);
 
 #ifndef YORU_DISABLE_METHOD_TABLES
 const ns(IArrayExtensions) ns(Vectors) = {
@@ -31,10 +34,10 @@ const ns(IArrayExtensions) ns(Vectors) = {
     .remove = ns(vector_remove),
 
     .clear = ns(vector_clear),
-    .copy = ns(vector_copy)
+    .copy = ns(vector_copy),
+    .println = ns(vector_println),
 };
 #endif
-
 
 #ifdef YORU_IMPL
 
@@ -76,8 +79,9 @@ bool ns(vector_append)(ns(IArray) *array, ns(any) value) {
 bool ns(vector_prepend)(ns(IArray) *array, ns(any) value) {
     if (!array) return false;
     array = _resize_vec_if_needed_append_or_prepend(array, 1);
-    memmove(array->items + sizeof(ns(any)), array->items, sizeof(ns(any)) * array->length);
-    array->items[0] = value;
+    ns(any) *items = array->items;
+    memmove(items + 1, items, sizeof(ns(any)) * array->length);
+    items[0] = value;
     ++array->length;
     return true;
 }
@@ -96,11 +100,35 @@ bool ns(vector_set)(ns(IArray) *array, size_t index, ns(any) value) {
 
 bool ns(vector_remove)(ns(IArray) *array, size_t index) {
     if (!array || index >= array->length) return false;
-    void *dest = array->items + sizeof(ns(any)) * index;
-    memset(dest, 0, sizeof(ns(any)));
-    memmove(dest, dest + sizeof(ns(any)), sizeof(ns(any)) * (array->length - index - 1));
+    ns(any) *items = array->items;
+    memmove(items + index, items + index + 1, sizeof(ns(any)) * (array->length - index - 1));
     --array->length;
     return true;
+}
+
+void ns(vector_println)(const ns(IArray) *array, ns(TypeTag) type_tag) {
+    if (!array) {
+        printf("<null vector>\n");
+        return;
+    }
+
+    if (array->length == 0) {
+        printf("[]\n");
+        return;
+    }
+
+    printf("[");
+    for (size_t i = 0; i < array->length; ++i) {
+        ns(any) val;
+        if (!ns(Vectors).get(array, i, &val)) {
+            printf(" _ ");
+        } else {
+            cstr itemstr = ns(any_to_string)(val, type_tag);
+            printf(" %s ", itemstr);
+            free(itemstr);
+        }
+    }
+    printf("]\n");
 }
 
 #endif // YORU_IMPL

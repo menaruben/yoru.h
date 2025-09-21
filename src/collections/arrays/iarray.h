@@ -27,13 +27,14 @@ typedef struct ns(IArrayExtensions) {
     
     func(void, clear, ns(IArray) *array);  
     func(ns(IArray)*, copy, const ns(IArray) *array);
+    func(void, println, const ns(IArray) *array, const ns(TypeTag) type_tag);
 } ns(IArrayExtensions);
 
 ns(IArray) *_default_iarray_init(size_t initial_length);
 void _default_iarray_destroy(ns(IArray) *array);
 
 void _default_iarray_clear(ns(IArray) *array);
-IArray *_default_iarray_copy(const ns(IArray) *array);
+ns(IArray) *_default_iarray_copy(const ns(IArray) *array);
 
 #ifdef YORU_IMPL
 

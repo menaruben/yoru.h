@@ -6,5 +6,10 @@
 
 TEST_GROUP(
   collections,
-  TEST_FUNC(collections_arrays_vector_append)
+  TEST_FUNC(collections_arrays_vector_append),
+  TEST_FUNC(collections_arrays_vector_prepend),
+  TEST_FUNC(collections_arrays_vector_get),
+  TEST_FUNC(collections_arrays_vector_set),
+  TEST_FUNC(collections_arrays_vector_remove),
+  TEST_FUNC(collections_arrays_vector_copy)
 );

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../ns.h"
-#include "../collections/collections.h"
+#include "../collections/lists/list.h"
 #include "../funcs/funcs.h"
 #include "../types/types.h"
 #include "../util/util.h"
@@ -13,7 +13,7 @@
 #include <stdio.h>
 
 typedef struct ns(StringBuilder) {
-    LinkedList *chars;
+    ns(LinkedList) *chars;
 } ns(StringBuilder);
 
 typedef struct ns(IStringBuilderExtensions)

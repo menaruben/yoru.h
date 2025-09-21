@@ -10,6 +10,9 @@
 #include <stddef.h>
 #include <stdio.h>
 
+#define __COLOR_BOLD  "\e[1m"
+#define __COLOR_OFF   "\e[m"
+
 void ns(test_run)(const ns(TestCollection) *collection);
 
 #ifndef YORU_DISABLE_METHOD_TABLES
@@ -46,17 +49,16 @@ void ns(test_run)(const ns(TestCollection) *collection) {
 static void ns(test_run_sequential)(const ns(TestCollection) *collection) {
     for (size_t group_index = 0; group_index < collection->group_count; ++group_index) {
         ns(TestGroup) group = collection->groups[group_index];
-        printf("### %s ###\n", group.name);
+        printf(__COLOR_BOLD "%s\n" __COLOR_OFF, group.name);
 
         size_t success_count = 0;
         for (size_t test_index = 0; test_index < group.test_count; ++test_index) {
             ns(TestFunc) test_func = group.tests[test_index];
             ns(TestResult) result = test_func.call();
-            printf("  %s %s %s\n", 
-                result.ok ? "✅" : "❌", 
-                test_func.name,
-                result.ok ? "" : result.message
-            );
+            printf(__COLOR_BOLD "  %s %s\n" __COLOR_OFF, 
+                result.ok ? "🟢" : "🔴", 
+                test_func.name);
+            printf("    %s\n", result.ok ? "" : result.message);
             
             if (result.ok) ++success_count;
         }

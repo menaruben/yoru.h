@@ -3,6 +3,7 @@
 #include "../ns.h"
 #include "../funcs/funcs.h"
 #include "../types/types.h"
+#include "../collections/maps/hashmap.h"
 #include "stringbuilder.h"
 
 #include <stddef.h>
