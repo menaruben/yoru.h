@@ -2,10 +2,12 @@
 #define YORU_STRIP_NAMESPACE
 #include "../src/yoru.h"
 
-#include "math_test.h"
+#include "math/math_test.h"
+#include "collections/collections_test.h"
 
 const TestGroup groups[] = {
     math_test_group,
+    collections_test_group,
 };
 
 const size_t group_count = sizeof(groups) / sizeof(TestGroup);

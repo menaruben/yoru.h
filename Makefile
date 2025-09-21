@@ -12,11 +12,10 @@ SHOW_TARGETS := $(patsubst examples/%.c, show/%, $(SRC))
 nix:
 	nix-shell -p libgccjit gnumake gdb binutils
 
-tests:
+tests: build
 	@echo "[INFO]: Running tests..."
-	$(CC) $(CFLAGS) -std=$(STD) -o build/tests $(TEST) -lpthread && ./build/tests || echo "[ERROR]: Tests failed"
+	$(CC) $(CFLAGS) -std=$(STD) $(TEST) -o build/tests && ./build/tests && rm -f build/tests || echo "[ERROR]: Tests failed"
 	@echo "[INFO]: Tests completed."
-	@rm -f build/tests
 
 build-examples:
 	@for src in $(SRC); do \

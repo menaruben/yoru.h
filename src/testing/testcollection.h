@@ -17,8 +17,6 @@ typedef struct ns(TestFunc) {
     cstr name;
 } ns(TestFunc);
 
-#define YORU_TEST_FUNC(__func) (ns(TestFunc)){ .call = __func, .name = nameof(__func) }
-
 typedef struct ns(TestGroup) {
     cstr name;
     ns(TestFunc) *tests;
