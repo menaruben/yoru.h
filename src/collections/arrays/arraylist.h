@@ -10,7 +10,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-typedef ns(IArray) ns(Vector);
+typedef ns(IArray) ns(ArrayList);
 
 bool ns(vector_append)(ns(IArray) *array, ns(any) value);
 bool ns(vector_prepend)(ns(IArray) *array, ns(any) value);
@@ -22,7 +22,7 @@ ns(IArray) *ns(vector_copy)(const ns(IArray) *array);
 void ns(vector_println)(const ns(IArray) *array, ns(TypeTag) type_tag);
 
 #ifndef YORU_DISABLE_METHOD_TABLES
-const ns(IArrayExtensions) ns(Vectors) = {
+const ns(IArrayExtensions) ns(ArrayLists) = {
     .init = _default_iarray_init,
     .destroy = _default_iarray_destroy,
 
@@ -120,7 +120,7 @@ void ns(vector_println)(const ns(IArray) *array, ns(TypeTag) type_tag) {
     printf("[");
     for (size_t i = 0; i < array->length; ++i) {
         ns(any) val;
-        if (!ns(Vectors).get(array, i, &val)) {
+        if (!ns(ArrayLists).get(array, i, &val)) {
             printf(" _ ");
         } else {
             cstr itemstr = ns(any_to_string)(val, type_tag);
