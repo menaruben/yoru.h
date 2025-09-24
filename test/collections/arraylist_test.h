@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../src/collections/collections.h"
+#include "../../src/collections/arrays/arraylist.h"
 #include "../../src/testing/testing.h"
 #include "../../src/ns.h"
 
@@ -9,7 +9,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#define testname(__name) collections_arrays_arraylist_##__name
+#define testname(__name) test_arraylist_##__name
 
 #include <stdio.h>
 
