@@ -13,15 +13,15 @@
 #define __COLOR_BOLD  "\e[1m"
 #define __COLOR_OFF   "\e[m"
 
-void ns(test_run)(const ns(TestCollection) *collection);
+void YORU_NS(test_run)(const YORU_NS(TestCollection) *collection);
 
 #ifndef YORU_DISABLE_METHOD_TABLES
-typedef struct ns(ITestRunner) {
-    func(void, run, const ns(TestCollection) *collection);
-} ns(ITestRunner);
+typedef struct YORU_NS(ITestRunner) {
+    YORU_FUNC(void, run, const YORU_NS(TestCollection) *collection);
+} YORU_NS(ITestRunner);
 
-const ns(ITestRunner) ns(TestRunner) = {
-    .run = ns(test_run),
+const YORU_NS(ITestRunner) YORU_NS(TestRunner) = {
+    .run = YORU_NS(test_run),
 };
 #endif
 
@@ -34,30 +34,30 @@ const bool parallel_tests = true;
 const bool parallel_tests = false;
 #endif
 
-static void ns(test_run_sequential)(const ns(TestCollection) *collection);
-static void ns(test_run_parallel)(const ns(TestCollection) *collection);
+static void YORU_NS(test_run_sequential)(const YORU_NS(TestCollection) *collection);
+static void YORU_NS(test_run_parallel)(const YORU_NS(TestCollection) *collection);
 
-void ns(test_run)(const ns(TestCollection) *collection) {
+void YORU_NS(test_run)(const YORU_NS(TestCollection) *collection) {
     if (parallel_tests) {
-        ns(test_run_parallel)(collection);
+        YORU_NS(test_run_parallel)(collection);
         return;
     }
 
-    ns(test_run_sequential)(collection);
+    YORU_NS(test_run_sequential)(collection);
 }
 
-static void ns(test_run_sequential)(const ns(TestCollection) *collection) {
+static void YORU_NS(test_run_sequential)(const YORU_NS(TestCollection) *collection) {
     for (size_t group_index = 0; group_index < collection->group_count; ++group_index) {
-        ns(TestGroup) group = collection->groups[group_index];
+        YORU_NS(TestGroup) group = collection->groups[group_index];
         printf(__COLOR_BOLD "%s\n" __COLOR_OFF, group.name);
 
         size_t success_count = 0;
         for (size_t test_index = 0; test_index < group.test_count; ++test_index) {
-            ns(TestFunc) test_func = group.tests[test_index];
-            ns(TestResult) result = test_func.call();
+            YORU_NS(TestFunc) YORU_TEST_FUNC = group.tests[test_index];
+            YORU_NS(TestResult) result = YORU_TEST_FUNC.call();
             printf(__COLOR_BOLD "  %s %s\n" __COLOR_OFF, 
                 result.ok ? "🟢" : "🔴", 
-                test_func.name);
+                YORU_TEST_FUNC.name);
             printf("    %s\n", result.ok ? "" : result.message);
             
             if (result.ok) ++success_count;
@@ -70,8 +70,8 @@ static void ns(test_run_sequential)(const ns(TestCollection) *collection) {
     }
 }
 
-static void ns(test_run_parallel)(const ns(TestCollection) *collection) {
-    panic("Parallel tests are not yet implemented.");
+static void YORU_NS(test_run_parallel)(const YORU_NS(TestCollection) *collection) {
+    YORU_PANIC("Parallel tests are not yet implemented.");
 }
 
 #endif

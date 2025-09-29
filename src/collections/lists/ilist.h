@@ -6,29 +6,29 @@
 
 #include <stddef.h>
 
-typedef struct ns(ListNode) {
-    ns(any) value;
-    struct ns(ListNode *next);
-    struct ns(ListNode *prev);
-} ns(ListNode);
+typedef struct YORU_NS(ListNode) {
+    YORU_NS(any) value;
+    struct YORU_NS(ListNode *next);
+    struct YORU_NS(ListNode *prev);
+} YORU_NS(ListNode);
 
-typedef struct ns(IList) {
-    ns(ListNode) *head;
+typedef struct YORU_NS(IList) {
+    YORU_NS(ListNode) *head;
     size_t length;
-} ns(IList);
+} YORU_NS(IList);
 
-typedef struct ns(IListExtensions) {
-    func(ns(IList) *, init);
-    func(void, destroy, ns(IList) *list);
+typedef struct YORU_NS(IListExtensions) {
+    YORU_FUNC(YORU_NS(IList) *, init);
+    YORU_FUNC(void, destroy, YORU_NS(IList) *list);
 
-    func(bool, append, ns(IList) *list, ns(any) value);
-    func(bool, prepend, ns(IList) *list, ns(any) value);
+    YORU_FUNC(bool, append, YORU_NS(IList) *list, YORU_NS(any) value);
+    YORU_FUNC(bool, prepend, YORU_NS(IList) *list, YORU_NS(any) value);
     
-    func(bool, set, ns(IList) *list, size_t index, ns(any) value);
-    func(bool, get, const ns(IList) *list, size_t index, ns(any) *out_value);
-    func(bool, insert, ns(IList) *list, size_t index, ns(any) value);
-    func(bool, remove, ns(IList) *list, size_t index);
+    YORU_FUNC(bool, set, YORU_NS(IList) *list, size_t index, YORU_NS(any) value);
+    YORU_FUNC(bool, get, const YORU_NS(IList) *list, size_t index, YORU_NS(any) *out_value);
+    YORU_FUNC(bool, insert, YORU_NS(IList) *list, size_t index, YORU_NS(any) value);
+    YORU_FUNC(bool, remove, YORU_NS(IList) *list, size_t index);
 
-    func(void, clear, ns(IList) *list);
-    func(bool, has_next, const ns(IList) *list, const ns(ListNode) *node);
-} ns(IListExtensions);
+    YORU_FUNC(void, clear, YORU_NS(IList) *list);
+    YORU_FUNC(bool, has_next, const YORU_NS(IList) *list, const YORU_NS(ListNode) *node);
+} YORU_NS(IListExtensions);

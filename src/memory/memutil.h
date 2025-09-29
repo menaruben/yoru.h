@@ -2,4 +2,4 @@
 
 #include <string.h>
 
-#define zero(dest, n) memset(dest, 0, n)
+#define YORU_ZERO(dest, n) memset(dest, 0, n)

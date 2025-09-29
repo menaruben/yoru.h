@@ -9,34 +9,34 @@
 
 typedef struct TrieNode {
     struct TrieNode *children[256];
-    ns(any) value;
-} ns(TrieNode);
+    YORU_NS(any) value;
+} YORU_NS(TrieNode);
 
 typedef struct Trie {
     TrieNode *root;
-} ns(Trie);
+} YORU_NS(Trie);
 
-bool ns(trie_set)(ns(Trie) *trie, const char *key, ns(any) value);
-bool ns(trie_get)(ns(Trie) *trie, const char *key, ns(any) *out_value);
-void ns(trie_destroy)(ns(Trie) *trie);
+bool YORU_NS(trie_set)(YORU_NS(Trie) *trie, const char *key, YORU_NS(any) value);
+bool YORU_NS(trie_get)(YORU_NS(Trie) *trie, const char *key, YORU_NS(any) *out_value);
+void YORU_NS(trie_destroy)(YORU_NS(Trie) *trie);
 
 #ifndef YORU_DISABLE_METHOD_TABLES
-typedef struct ns(ITrieExtensions) {
-    func(bool, set, ns(Trie) *trie, const char *key, ns(any) value);
-    func(bool, get, ns(Trie) *trie, const char *key, ns(any) *out_value);
-    func(void, destroy, ns(Trie) *trie);
-} ns(ITrieExtensions);
+typedef struct YORU_NS(ITrieExtensions) {
+    YORU_FUNC(bool, set, YORU_NS(Trie) *trie, const char *key, YORU_NS(any) value);
+    YORU_FUNC(bool, get, YORU_NS(Trie) *trie, const char *key, YORU_NS(any) *out_value);
+    YORU_FUNC(void, destroy, YORU_NS(Trie) *trie);
+} YORU_NS(ITrieExtensions);
 
-const ns(ITrieExtensions) ns(Tries) = {
-    .set = ns(trie_set),
-    .get = ns(trie_get),
-    .destroy = ns(trie_destroy)
+const YORU_NS(ITrieExtensions) YORU_NS(Tries) = {
+    .set = YORU_NS(trie_set),
+    .get = YORU_NS(trie_get),
+    .destroy = YORU_NS(trie_destroy)
 };
 #endif
 
 #ifdef YORU_IMPL
 
-static TrieNode *__trie_find_node__(ns(Trie) *trie, const char *key) {
+static TrieNode *__trie_find_node__(YORU_NS(Trie) *trie, const char *key) {
     TrieNode *node = trie->root;
     if (!node) {
         node = malloc(sizeof(TrieNode));
@@ -44,7 +44,7 @@ static TrieNode *__trie_find_node__(ns(Trie) *trie, const char *key) {
             return NULL;
         }
         memset(node->children, 0, sizeof(node->children));
-        node->value = (ns(any)){0};
+        node->value = (YORU_NS(any)){0};
         trie->root = node;
     }
 
@@ -57,7 +57,7 @@ static TrieNode *__trie_find_node__(ns(Trie) *trie, const char *key) {
                 return NULL;
             }
             memset(next_node->children, 0, sizeof(next_node->children));
-            next_node->value = (ns(any)){0};
+            next_node->value = (YORU_NS(any)){0};
             node->children[ch] = next_node;
         }
         node = next_node;
@@ -66,7 +66,7 @@ static TrieNode *__trie_find_node__(ns(Trie) *trie, const char *key) {
     return node;
 }
 
-bool ns(trie_set)(ns(Trie) *trie, const char *key, ns(any) value) {
+bool YORU_NS(trie_set)(YORU_NS(Trie) *trie, const char *key, YORU_NS(any) value) {
     TrieNode *node = __trie_find_node__(trie, key);
     if (!node) {
         return false;
@@ -76,7 +76,7 @@ bool ns(trie_set)(ns(Trie) *trie, const char *key, ns(any) value) {
     return true;
 }
 
-bool ns(trie_get)(ns(Trie) *trie, const char *key, ns(any) *out_value) {
+bool YORU_NS(trie_get)(YORU_NS(Trie) *trie, const char *key, YORU_NS(any) *out_value) {
     TrieNode *node = __trie_find_node__(trie, key);
     if (!node) {
         return false;
@@ -96,7 +96,7 @@ static void __trie_destroy_node__(TrieNode *node) {
     free(node);
 }
 
-void ns(trie_destroy)(ns(Trie) *trie) {
+void YORU_NS(trie_destroy)(YORU_NS(Trie) *trie) {
     if (!trie || !trie->root) return;
 
     __trie_destroy_node__(trie->root);

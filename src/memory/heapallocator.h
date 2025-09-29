@@ -9,11 +9,11 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-static bool _heap_alloc(size_t size, ns(SizedPtr) *out_ptr);
+static bool _heap_alloc(size_t size, YORU_NS(SizedPtr) *out_ptr);
 static void _heap_free(void *ptr);
-static bool _heap_realloc(void *ptr, size_t new_size, ns(SizedPtr) *out_ptr);
+static bool _heap_realloc(void *ptr, size_t new_size, YORU_NS(SizedPtr) *out_ptr);
 
-const ns(IAllocator) ns(HeapAllocator) = {
+const YORU_NS(IAllocator) YORU_NS(HeapAllocator) = {
     .alloc = _heap_alloc,
     .free = _heap_free,
     .realloc = _heap_realloc,
@@ -21,14 +21,14 @@ const ns(IAllocator) ns(HeapAllocator) = {
 
 #ifdef YORU_IMPL
 
-static bool _heap_alloc(size_t size, ns(SizedPtr) *out_ptr) {
+static bool _heap_alloc(size_t size, YORU_NS(SizedPtr) *out_ptr) {
     void *mem = malloc(size);
     if (!mem) {
         return false;
     }
 
-    zero(mem, size);
-    *out_ptr = (ns(SizedPtr)){ .ptr = mem, .size = size, .offset = 0 };
+    YORU_ZERO(mem, size);
+    *out_ptr = (YORU_NS(SizedPtr)){ .ptr = mem, .size = size, .offset = 0 };
     return true;
 }
 
@@ -38,7 +38,7 @@ static void _heap_free(void *ptr) {
     ptr = NULL;
 }
 
-static bool _heap_realloc(void *ptr, size_t new_size, ns(SizedPtr) *out_ptr) {
+static bool _heap_realloc(void *ptr, size_t new_size, YORU_NS(SizedPtr) *out_ptr) {
     if (!ptr) {
         return false;
     }
@@ -48,7 +48,7 @@ static bool _heap_realloc(void *ptr, size_t new_size, ns(SizedPtr) *out_ptr) {
         return false;
     }
 
-    *out_ptr = (ns(SizedPtr)){ .ptr = mem, .size = new_size, .offset = 0 };
+    *out_ptr = (YORU_NS(SizedPtr)){ .ptr = mem, .size = new_size, .offset = 0 };
     return true;
 }
 

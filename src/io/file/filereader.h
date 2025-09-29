@@ -7,10 +7,10 @@
 
 #include <stdio.h>
 
-static ns(ReadResult) _read_file(const void *src);
-static ns(ReadResult) _read_file_exact(const void *src, size_t nbytes);
+static YORU_NS(ReadResult) _read_file(const void *src);
+static YORU_NS(ReadResult) _read_file_exact(const void *src, size_t nbytes);
 
-const ns(IReader) ns(FileReader) = {
+const YORU_NS(IReader) YORU_NS(FileReader) = {
     .read = _read_file,
     .read_exact = _read_file_exact,
 };
@@ -21,20 +21,20 @@ typedef enum {
     FILEREAD_ERROR_READ_FAILURE,
     FILEREAD_ERROR_OUT_OF_MEMORY,
     FILEREAD_ERROR_CLOSE_FAILURE,
-} ns(FileReadError);
+} YORU_NS(FileReadError);
 
 #ifdef YORU_IMPL
 
-static ns(ReadResult) _read_file_core(FILE *file, cstr filepath, size_t n, ns(FileContext) *ctx) {
+static YORU_NS(ReadResult) _read_file_core(FILE *file, cstr filepath, size_t n, YORU_NS(FileContext) *ctx) {
     if (!file) {
-        *ctx = (ns(FileContext)){ .filename = filepath, .content = NULL, .size_bytes = 0 };
-        return (ns(ReadResult)){.bytes_read = 0, .err = FILEREAD_ERROR_FILE_NOT_FOUND, .ctx = (ns(any)){ .ptr = ctx } };
+        *ctx = (YORU_NS(FileContext)){ .filename = filepath, .content = NULL, .size_bytes = 0 };
+        return (YORU_NS(ReadResult)){.bytes_read = 0, .err = FILEREAD_ERROR_FILE_NOT_FOUND, .ctx = (YORU_NS(any)){ .ptr = ctx } };
     }
 
     char *content = malloc(n + 1);
     if (!content) {
-        *ctx = (ns(FileContext)){ .filename = filepath, .content = NULL, .size_bytes = 0 };
-        return (ns(ReadResult)){.bytes_read = 0, .err = FILEREAD_ERROR_OUT_OF_MEMORY, .ctx = (ns(any)){ .ptr = ctx } };
+        *ctx = (YORU_NS(FileContext)){ .filename = filepath, .content = NULL, .size_bytes = 0 };
+        return (YORU_NS(ReadResult)){.bytes_read = 0, .err = FILEREAD_ERROR_OUT_OF_MEMORY, .ctx = (YORU_NS(any)){ .ptr = ctx } };
     }
 
     fread(content, 1, n, file);
@@ -42,25 +42,25 @@ static ns(ReadResult) _read_file_core(FILE *file, cstr filepath, size_t n, ns(Fi
 
     if (fclose(file) != '\0') {
         free(content);
-        *ctx = (ns(FileContext)){ .filename = filepath, .content = NULL, .size_bytes = 0 };
-        return (ns(ReadResult)){.bytes_read = 0, .err = FILEREAD_ERROR_CLOSE_FAILURE, .ctx = (ns(any)){ .ptr = ctx } };
+        *ctx = (YORU_NS(FileContext)){ .filename = filepath, .content = NULL, .size_bytes = 0 };
+        return (YORU_NS(ReadResult)){.bytes_read = 0, .err = FILEREAD_ERROR_CLOSE_FAILURE, .ctx = (YORU_NS(any)){ .ptr = ctx } };
     }
 
-    *ctx = (ns(FileContext)){ .filename = filepath, .content = content, .size_bytes = n };
-    return (ns(ReadResult)){ .bytes_read = n, .err = FILEREAD_ERROR_NONE, .ctx = (ns(any)){ .ptr = ctx } };
+    *ctx = (YORU_NS(FileContext)){ .filename = filepath, .content = content, .size_bytes = n };
+    return (YORU_NS(ReadResult)){ .bytes_read = n, .err = FILEREAD_ERROR_NONE, .ctx = (YORU_NS(any)){ .ptr = ctx } };
 }
 
-static ns(ReadResult) _read_file(const void *src) {
-    ns(FileContext) *ctx = malloc(sizeof(ns(FileContext)));
+static YORU_NS(ReadResult) _read_file(const void *src) {
+    YORU_NS(FileContext) *ctx = malloc(sizeof(YORU_NS(FileContext)));
     if (!ctx) {
-        return (ns(ReadResult)){.bytes_read = 0, .err = FILEREAD_ERROR_OUT_OF_MEMORY, .ctx = (ns(any)){ .ptr = NULL } };
+        return (YORU_NS(ReadResult)){.bytes_read = 0, .err = FILEREAD_ERROR_OUT_OF_MEMORY, .ctx = (YORU_NS(any)){ .ptr = NULL } };
     }
 
     cstr filepath = (cstr)src;
     FILE *fp = fopen(filepath, "r");
     if (!fp) {
         free(ctx);
-        return (ns(ReadResult)){ .bytes_read = 0, .err = FILEREAD_ERROR_FILE_NOT_FOUND, .ctx = (ns(any)){ .ptr = NULL } };
+        return (YORU_NS(ReadResult)){ .bytes_read = 0, .err = FILEREAD_ERROR_FILE_NOT_FOUND, .ctx = (YORU_NS(any)){ .ptr = NULL } };
     }
 
     fseek(fp, 0, SEEK_END);
@@ -69,17 +69,17 @@ static ns(ReadResult) _read_file(const void *src) {
     return _read_file_core(fp, filepath, file_size, ctx);
 }
 
-static ns(ReadResult) _read_file_exact(const void *src, size_t nbytes) {
-    ns(FileContext) *ctx = malloc(sizeof(ns(FileContext)));
+static YORU_NS(ReadResult) _read_file_exact(const void *src, size_t nbytes) {
+    YORU_NS(FileContext) *ctx = malloc(sizeof(YORU_NS(FileContext)));
     if (!ctx) {
-        return (ns(ReadResult)){.bytes_read = 0, .err = FILEREAD_ERROR_OUT_OF_MEMORY, .ctx = (ns(any)){ .ptr = NULL } };
+        return (YORU_NS(ReadResult)){.bytes_read = 0, .err = FILEREAD_ERROR_OUT_OF_MEMORY, .ctx = (YORU_NS(any)){ .ptr = NULL } };
     }
 
     cstr filepath = (cstr)src;
     FILE *fp = fopen(filepath, "r");
     if (!fp) {
         free(ctx);
-        return (ns(ReadResult)){ .bytes_read = 0, .err = FILEREAD_ERROR_FILE_NOT_FOUND, .ctx = (ns(any)){ .ptr = NULL } };
+        return (YORU_NS(ReadResult)){ .bytes_read = 0, .err = FILEREAD_ERROR_FILE_NOT_FOUND, .ctx = (YORU_NS(any)){ .ptr = NULL } };
     }
 
     return _read_file_core(fp, filepath, nbytes, ctx);

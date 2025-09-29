@@ -2,24 +2,24 @@
 
 #include <stdio.h>
 
-#define panic(msg) \
+#define YORU_PANIC(msg) \
     do {\
-        fprintf(stderr, "[PANIC] %s:%d: %s\n", __FILE__, __LINE__, msg); \
+        fprintf(stderr, "[YORU_PANIC] %s:%d: %s\n", __FILE__, __LINE__, msg); \
         exit(-1); \
     } while(0);
 
-#define panicf(fmt, ...) \
+#define YORU_PANICF(fmt, ...) \
     do {\
-        fprintf(stderr, "[PANIC] %s:%d: " fmt "\n", __FILE__, __LINE__, __VA_ARGS__); \
+        fprintf(stderr, "[YORU_PANIC] %s:%d: " fmt "\n", __FILE__, __LINE__, __VA_ARGS__); \
         exit(-1); \
     } while(0);
 
-#define warn(msg) \
+#define YORU_WARN(msg) \
     do {\
-        fprintf(stderr, "[WARN] %s:%d: %s\n", __FILE__, __LINE__, msg); \
+        fprintf(stderr, "[YORU_WARN] %s:%d: %s\n", __FILE__, __LINE__, msg); \
     } while(0);
 
-#define warnf(fmt, ...) \
+#define YORU_WARNF(fmt, ...) \
     do {\
-        fprintf(stderr, "[WARN] %s:%d: " fmt "\n", __FILE__, __LINE__, __VA_ARGS__); \
+        fprintf(stderr, "[YORU_WARN] %s:%d: " fmt "\n", __FILE__, __LINE__, __VA_ARGS__); \
     } while(0);

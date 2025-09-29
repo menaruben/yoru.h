@@ -8,42 +8,42 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct ns(String) {
+typedef struct YORU_NS(String) {
     const char *cstr;
     size_t length;
-} ns(String);
+} YORU_NS(String);
 
 typedef struct StringExtensions {
-    func(const ns(String), new, const char *cstr);
-    func(bool, concat, const ns(String) a, const ns(String) b, ns(String) *out_string);
-} ns(StringExtensions);
+    YORU_FUNC(const YORU_NS(String), new, const char *cstr);
+    YORU_FUNC(bool, concat, const YORU_NS(String) a, const YORU_NS(String) b, YORU_NS(String) *out_string);
+} YORU_NS(StringExtensions);
 
-const ns(String) ns(string_new)(const char *cstr);
-bool ns(string_concat)(const ns(String) a, const ns(String) b, ns(String) *out_string);
+const YORU_NS(String) YORU_NS(string_new)(const char *cstr);
+bool YORU_NS(string_concat)(const YORU_NS(String) a, const YORU_NS(String) b, YORU_NS(String) *out_string);
 
 #ifndef YORU_DISABLE_METHOD_TABLES
-const ns(StringExtensions) Strings = {
-    .new = ns(string_new),
-    .concat = ns(string_concat),
+const YORU_NS(StringExtensions) Strings = {
+    .new = YORU_NS(string_new),
+    .concat = YORU_NS(string_concat),
 };
 #endif
 
 #ifdef YORU_IMPL
 
-const ns(String) ns(string_new)(const char *cstr) {
-    return (ns(String)){.cstr = cstr, .length = strlen(cstr)};
+const YORU_NS(String) YORU_NS(string_new)(const char *cstr) {
+    return (YORU_NS(String)){.cstr = cstr, .length = strlen(cstr)};
 }
 
-bool ns(string_concat)(const ns(String) a, const ns(String) b, ns(String) *out_string) {
+bool YORU_NS(string_concat)(const YORU_NS(String) a, const YORU_NS(String) b, YORU_NS(String) *out_string) {
     size_t new_length = a.length + b.length;
-    char *ns(string_new) = malloc(new_length+1);
-    if (!ns(string_new)) {
+    char *YORU_NS(string_new) = malloc(new_length+1);
+    if (!YORU_NS(string_new)) {
         return false;
     }
-    ns(string_new)[new_length] = 0;
-    strncpy(ns(string_new), a.cstr, a.length);
-    strncpy(ns(string_new) + a.length, b.cstr, b.length);
-    out_string->cstr = ns(string_new);
+    YORU_NS(string_new)[new_length] = 0;
+    strncpy(YORU_NS(string_new), a.cstr, a.length);
+    strncpy(YORU_NS(string_new) + a.length, b.cstr, b.length);
+    out_string->cstr = YORU_NS(string_new);
     out_string->length = new_length;
     return true;
 }

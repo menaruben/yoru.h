@@ -4,19 +4,23 @@
 #include "../../src/ns.h"
 #include "arraylist_test.h"
 #include "list_test.h"
+#include "hashmap_test.h"
 
-TEST_GROUP(
+YORU_TEST_GROUP(
   collections,
-  TEST_FUNC(test_arraylist_append),
-  TEST_FUNC(test_arraylist_prepend),
-  TEST_FUNC(test_arraylist_get),
-  TEST_FUNC(test_arraylist_set),
-  TEST_FUNC(test_arraylist_remove),
-  TEST_FUNC(test_arraylist_copy),
-  TEST_FUNC(test_list_append),
-  TEST_FUNC(test_list_prepend),
-  TEST_FUNC(test_list_get),
-  TEST_FUNC(test_list_set),
-  TEST_FUNC(test_list_insert),
-  TEST_FUNC(test_list_remove)
+  YORU_TEST_FUNC(test_arraylist_append),
+  YORU_TEST_FUNC(test_arraylist_prepend),
+  YORU_TEST_FUNC(test_arraylist_get),
+  YORU_TEST_FUNC(test_arraylist_set),
+  YORU_TEST_FUNC(test_arraylist_remove),
+  YORU_TEST_FUNC(test_arraylist_copy),
+  YORU_TEST_FUNC(test_list_append),
+  YORU_TEST_FUNC(test_list_prepend),
+  YORU_TEST_FUNC(test_list_get),
+  YORU_TEST_FUNC(test_list_set),
+  YORU_TEST_FUNC(test_list_insert),
+  YORU_TEST_FUNC(test_list_remove),
+  YORU_TEST_FUNC(test_hashmap_init),
+  YORU_TEST_FUNC(test_hashmap_set_and_get),
+  YORU_TEST_FUNC(test_hashmap_destroy)
 );

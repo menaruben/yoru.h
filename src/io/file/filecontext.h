@@ -6,17 +6,17 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-typedef struct ns(FileContext) {
+typedef struct YORU_NS(FileContext) {
     cstr filename;
     cstr content;
     size_t size_bytes;
-} ns(FileContext);
+} YORU_NS(FileContext);
 
-void ns(filecontext_destroy)(ns(FileContext) *ctx);
+void YORU_NS(filecontext_destroy)(YORU_NS(FileContext) *ctx);
 
 #ifdef YORU_IMPL
 
-void ns(filecontext_destroy)(ns(FileContext) *ctx) {
+void YORU_NS(filecontext_destroy)(YORU_NS(FileContext) *ctx) {
     if (!ctx) return;
     if (ctx->content) {
         free(ctx->content);

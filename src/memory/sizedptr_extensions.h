@@ -13,21 +13,21 @@
     but also for general pointers when allocating memory.
 */
 
-typedef struct ns(SizedPtrExtensions) {
-    func(bool, claim, ns(SizedPtr) *sptr, size_t size, ns(SizedPtr) *out_ptr);
-} ns(SizedPtrExtensions);
+typedef struct YORU_NS(SizedPtrExtensions) {
+    YORU_FUNC(bool, claim, YORU_NS(SizedPtr) *sptr, size_t size, YORU_NS(SizedPtr) *out_ptr);
+} YORU_NS(SizedPtrExtensions);
 
-bool ns(sizedptr_claim)(ns(SizedPtr) *sptr, size_t size, ns(SizedPtr) *out_ptr);
+bool YORU_NS(sizedptr_claim)(YORU_NS(SizedPtr) *sptr, size_t size, YORU_NS(SizedPtr) *out_ptr);
 
 #ifndef YORU_DISABLE_METHOD_TABLES
-const ns(SizedPtrExtensions) ns(SizedPtrs) = {
-    .claim = ns(sizedptr_claim),  
+const YORU_NS(SizedPtrExtensions) YORU_NS(SizedPtrs) = {
+    .claim = YORU_NS(sizedptr_claim),  
 };
 #endif
 
 #ifdef YORU_IMPL
 
-bool ns(sizedptr_claim)(ns(SizedPtr) *sptr, size_t size, ns(SizedPtr) *out_ptr) {
+bool YORU_NS(sizedptr_claim)(YORU_NS(SizedPtr) *sptr, size_t size, YORU_NS(SizedPtr) *out_ptr) {
     if (!sptr) {
         return false;
     }
@@ -38,7 +38,7 @@ bool ns(sizedptr_claim)(ns(SizedPtr) *sptr, size_t size, ns(SizedPtr) *out_ptr) 
         return false;
     }
 
-    *out_ptr = (ns(SizedPtr)){.ptr = sptr->ptr+sptr->offset, .offset = 0, .size = size};
+    *out_ptr = (YORU_NS(SizedPtr)){.ptr = sptr->ptr+sptr->offset, .offset = 0, .size = size};
     sptr->offset = new_offset;
     return true;
 }

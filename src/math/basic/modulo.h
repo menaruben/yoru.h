@@ -5,11 +5,11 @@
 
 #include <stddef.h>
 
-i64 ns(modulo)(i64 a, i64 b);
+i64 YORU_NS(modulo)(i64 a, i64 b);
 
 #ifdef YORU_IMPL
 
-i64 ns(modulo)(i64 a, i64 b) {
+i64 YORU_NS(modulo)(i64 a, i64 b) {
     if (a == 0 || b <= 0) {
         return 0;
     }

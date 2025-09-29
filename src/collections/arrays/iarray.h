@@ -8,43 +8,43 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-typedef struct ns(IArray) {
-    ns(any) *items;
+typedef struct YORU_NS(IArray) {
+    YORU_NS(any) *items;
     size_t length;
     size_t capacity;
-} ns(IArray);
+} YORU_NS(IArray);
 
-typedef struct ns(IArrayExtensions) {
-    func(ns(IArray)*, init, size_t initial_length);
-    func(void, destroy, ns(IArray) *array);
+typedef struct YORU_NS(IArrayExtensions) {
+    YORU_FUNC(YORU_NS(IArray)*, init, size_t initial_length);
+    YORU_FUNC(void, destroy, YORU_NS(IArray) *array);
 
-    func(bool, append, ns(IArray) *array, ns(any) value);
-    func(bool, prepend, ns(IArray) *array, ns(any) value);
+    YORU_FUNC(bool, append, YORU_NS(IArray) *array, YORU_NS(any) value);
+    YORU_FUNC(bool, prepend, YORU_NS(IArray) *array, YORU_NS(any) value);
 
-    func(bool, set, ns(IArray) *array, size_t index, ns(any) value);
-    func(bool, get, const ns(IArray) *array, size_t index, ns(any) *out_value);
-    func(bool, remove, ns(IArray) *array, size_t index);
+    YORU_FUNC(bool, set, YORU_NS(IArray) *array, size_t index, YORU_NS(any) value);
+    YORU_FUNC(bool, get, const YORU_NS(IArray) *array, size_t index, YORU_NS(any) *out_value);
+    YORU_FUNC(bool, remove, YORU_NS(IArray) *array, size_t index);
     
-    func(void, clear, ns(IArray) *array);  
-    func(ns(IArray)*, copy, const ns(IArray) *array);
-    func(void, println, const ns(IArray) *array, const ns(TypeTag) type_tag);
-} ns(IArrayExtensions);
+    YORU_FUNC(void, clear, YORU_NS(IArray) *array);  
+    YORU_FUNC(YORU_NS(IArray)*, copy, const YORU_NS(IArray) *array);
+    YORU_FUNC(void, println, const YORU_NS(IArray) *array, const YORU_NS(TypeTag) type_tag);
+} YORU_NS(IArrayExtensions);
 
-ns(IArray) *_default_iarray_init(size_t initial_length);
-void _default_iarray_destroy(ns(IArray) *array);
+YORU_NS(IArray) *_default_iarray_init(size_t initial_length);
+void _default_iarray_destroy(YORU_NS(IArray) *array);
 
-void _default_iarray_clear(ns(IArray) *array);
-ns(IArray) *_default_iarray_copy(const ns(IArray) *array);
+void _default_iarray_clear(YORU_NS(IArray) *array);
+YORU_NS(IArray) *_default_iarray_copy(const YORU_NS(IArray) *array);
 
 #ifdef YORU_IMPL
 
-ns(IArray) *_default_iarray_init(size_t initial_length) {
-    ns(IArray) *coll = (ns(IArray) *)malloc(sizeof(ns(IArray)));
+YORU_NS(IArray) *_default_iarray_init(size_t initial_length) {
+    YORU_NS(IArray) *coll = (YORU_NS(IArray) *)malloc(sizeof(YORU_NS(IArray)));
     if (!coll) {
         return NULL;
     }
 
-    size_t capacity = sizeof(ns(any)) * initial_length;
+    size_t capacity = sizeof(YORU_NS(any)) * initial_length;
     void *items = malloc(capacity);
     if (!items) {
         free(coll);
@@ -58,7 +58,7 @@ ns(IArray) *_default_iarray_init(size_t initial_length) {
     return coll;
 }
 
-void _default_iarray_destroy(ns(IArray) *array) {
+void _default_iarray_destroy(YORU_NS(IArray) *array) {
     if (!array) return;
     if (array->items) {
         free(array->items);
@@ -66,7 +66,7 @@ void _default_iarray_destroy(ns(IArray) *array) {
     free(array);
 }
 
-void _default_iarray_clear(ns(IArray) *array) {
+void _default_iarray_clear(YORU_NS(IArray) *array) {
     if (!array) return;
     if (array->items) {
         free(array->items);
@@ -80,12 +80,12 @@ void _default_iarray_clear(ns(IArray) *array) {
     array->length = 0;
 }
 
-ns(IArray) *_default_iarray_copy(const ns(IArray) *array) {
+YORU_NS(IArray) *_default_iarray_copy(const YORU_NS(IArray) *array) {
     if (!array) {
         return NULL;
     }
 
-    ns(IArray) *copy = (ns(IArray) *)malloc(sizeof(ns(IArray)));
+    YORU_NS(IArray) *copy = (YORU_NS(IArray) *)malloc(sizeof(YORU_NS(IArray)));
     if (!copy) {
         return NULL;
     }

@@ -9,10 +9,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static ns(WriteResult) _write_file(const void *dest);
-static ns(WriteResult) _write_file_exact(const void *dest, size_t nbytes);
+static YORU_NS(WriteResult) _write_file(const void *dest);
+static YORU_NS(WriteResult) _write_file_exact(const void *dest, size_t nbytes);
 
-const ns(IWriter) ns(FileWriter) = {
+const YORU_NS(IWriter) YORU_NS(FileWriter) = {
     .write = _write_file,
     .write_exact = _write_file_exact,
 };
@@ -23,46 +23,46 @@ typedef enum {
     FILEWRITE_ERROR_WRITE_FAILURE,
     FILEWRITE_ERROR_OUT_OF_MEMORY,
     FILEWRITE_ERROR_CLOSE_FAILURE,
-} ns(FileWriteError);
+} YORU_NS(FileWriteError);
 
 #ifdef YORU_IMPL
 
-static ns(WriteResult) _write_file_core(FILE *file, cstr filepath, const char *content, size_t n, ns(FileContext) *ctx) {
+static YORU_NS(WriteResult) _write_file_core(FILE *file, cstr filepath, const char *content, size_t n, YORU_NS(FileContext) *ctx) {
     if (!file) {
-        *ctx = (ns(FileContext)){ .filename = filepath, .content = NULL, .size_bytes = 0 };
-        return (ns(WriteResult)){.bytes_written = 0, .err = -1, .ctx = (ns(any)){ .ptr = ctx } };
+        *ctx = (YORU_NS(FileContext)){ .filename = filepath, .content = NULL, .size_bytes = 0 };
+        return (YORU_NS(WriteResult)){.bytes_written = 0, .err = -1, .ctx = (YORU_NS(any)){ .ptr = ctx } };
     }
 
     size_t written = fwrite(content, 1, n, file);
     if (written < n) {
         fclose(file);
-        *ctx = (ns(FileContext)){ .filename = filepath, .content = NULL, .size_bytes = 0 };
-        return (ns(WriteResult)){.bytes_written = written, .err = -1, .ctx = (ns(any)){ .ptr = ctx } };
+        *ctx = (YORU_NS(FileContext)){ .filename = filepath, .content = NULL, .size_bytes = 0 };
+        return (YORU_NS(WriteResult)){.bytes_written = written, .err = -1, .ctx = (YORU_NS(any)){ .ptr = ctx } };
     }
 
     if (fclose(file) != 0) {
-        *ctx = (ns(FileContext)){ .filename = filepath, .content = NULL, .size_bytes = 0 };
-        return (ns(WriteResult)){.bytes_written = written, .err = -1, .ctx = (ns(any)){ .ptr = ctx } };
+        *ctx = (YORU_NS(FileContext)){ .filename = filepath, .content = NULL, .size_bytes = 0 };
+        return (YORU_NS(WriteResult)){.bytes_written = written, .err = -1, .ctx = (YORU_NS(any)){ .ptr = ctx } };
     }
 
-    *ctx = (ns(FileContext)){ .filename = filepath, .content = NULL, .size_bytes = written };
-    return (ns(WriteResult)){ .bytes_written = written, .err = 0, .ctx = (ns(any)){ .ptr = ctx } };
+    *ctx = (YORU_NS(FileContext)){ .filename = filepath, .content = NULL, .size_bytes = written };
+    return (YORU_NS(WriteResult)){ .bytes_written = written, .err = 0, .ctx = (YORU_NS(any)){ .ptr = ctx } };
 }
 
-static ns(WriteResult) _write_file(const void *dest) {
-    cstr filepath = ((ns(FileContext) *)dest)->filename;
+static YORU_NS(WriteResult) _write_file(const void *dest) {
+    cstr filepath = ((YORU_NS(FileContext) *)dest)->filename;
     FILE *fp = fopen(filepath, "w");
     if (!fp) {
-        return (ns(WriteResult)){.bytes_written = 0, .err = -1, .ctx = (ns(any)){ .ptr = NULL } };
+        return (YORU_NS(WriteResult)){.bytes_written = 0, .err = -1, .ctx = (YORU_NS(any)){ .ptr = NULL } };
     }
 
-    ns(FileContext) *ctx = malloc(sizeof(ns(FileContext)));
+    YORU_NS(FileContext) *ctx = malloc(sizeof(YORU_NS(FileContext)));
     if (!ctx) {
         fclose(fp);
-        return (ns(WriteResult)){.bytes_written = 0, .err = -1, .ctx = (ns(any)){ .ptr = NULL } };
+        return (YORU_NS(WriteResult)){.bytes_written = 0, .err = -1, .ctx = (YORU_NS(any)){ .ptr = NULL } };
     }
     
-    ns(WriteResult) result = _write_file_core(fp, filepath, ((ns(FileContext) *)dest)->content, ((ns(FileContext) *)dest)->size_bytes, ctx);
+    YORU_NS(WriteResult) result = _write_file_core(fp, filepath, ((YORU_NS(FileContext) *)dest)->content, ((YORU_NS(FileContext) *)dest)->size_bytes, ctx);
     if (result.err != 0) {
         free(ctx);
         return result;
@@ -71,20 +71,20 @@ static ns(WriteResult) _write_file(const void *dest) {
     return result;
 }
 
-static ns(WriteResult) _write_file_exact(const void *dest, size_t nbytes) {
-    cstr filepath = ((ns(FileContext) *)dest)->filename;
+static YORU_NS(WriteResult) _write_file_exact(const void *dest, size_t nbytes) {
+    cstr filepath = ((YORU_NS(FileContext) *)dest)->filename;
     FILE *fp = fopen(filepath, "w");
     if (!fp) {
-        return (ns(WriteResult)){.bytes_written = 0, .err = -1, .ctx = (ns(any)){ .ptr = NULL } };
+        return (YORU_NS(WriteResult)){.bytes_written = 0, .err = -1, .ctx = (YORU_NS(any)){ .ptr = NULL } };
     }
 
-    ns(FileContext) *ctx = malloc(sizeof(ns(FileContext)));
+    YORU_NS(FileContext) *ctx = malloc(sizeof(YORU_NS(FileContext)));
     if (!ctx) {
         fclose(fp);
-        return (ns(WriteResult)){.bytes_written = 0, .err = -1, .ctx = (ns(any)){ .ptr = NULL } };
+        return (YORU_NS(WriteResult)){.bytes_written = 0, .err = -1, .ctx = (YORU_NS(any)){ .ptr = NULL } };
     }
     
-    ns(WriteResult) result = _write_file_core(fp, filepath, ((ns(FileContext) *)dest)->content, nbytes, ctx);
+    YORU_NS(WriteResult) result = _write_file_core(fp, filepath, ((YORU_NS(FileContext) *)dest)->content, nbytes, ctx);
     if (result.err != 0) {
         free(ctx);
         return result;

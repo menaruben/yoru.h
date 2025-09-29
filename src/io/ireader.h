@@ -7,13 +7,13 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-typedef struct ns(ReadResult) {
+typedef struct YORU_NS(ReadResult) {
     size_t bytes_read;
     int err;
-    ns(any) ctx;
-} ns(ReadResult);
+    YORU_NS(any) ctx;
+} YORU_NS(ReadResult);
 
-typedef struct ns(IReader) {
-    func(ns(ReadResult), read, const void *src);
-    func(ns(ReadResult), read_exact, const void *src, size_t nbytes);
-} ns(IReader);
+typedef struct YORU_NS(IReader) {
+    YORU_FUNC(YORU_NS(ReadResult), read, const void *src);
+    YORU_FUNC(YORU_NS(ReadResult), read_exact, const void *src, size_t nbytes);
+} YORU_NS(IReader);

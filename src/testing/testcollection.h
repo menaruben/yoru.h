@@ -7,23 +7,23 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-typedef struct ns(TestResult) {
+typedef struct YORU_NS(TestResult) {
     int ok;
     cstr message;
-} ns(TestResult);
+} YORU_NS(TestResult);
 
-typedef struct ns(TestFunc) {
-    func(ns(TestResult), call, void);
+typedef struct YORU_NS(TestFunc) {
+    YORU_FUNC(YORU_NS(TestResult), call, void);
     cstr name;
-} ns(TestFunc);
+} YORU_NS(TestFunc);
 
-typedef struct ns(TestGroup) {
+typedef struct YORU_NS(TestGroup) {
     cstr name;
-    ns(TestFunc) *tests;
+    YORU_NS(TestFunc) *tests;
     size_t test_count;
-} ns(TestGroup);
+} YORU_NS(TestGroup);
 
-typedef struct ns(TestCollection) {
-    ns(TestGroup) *groups;
+typedef struct YORU_NS(TestCollection) {
+    YORU_NS(TestGroup) *groups;
     size_t group_count;
-} ns(TestCollection);
+} YORU_NS(TestCollection);

@@ -11,7 +11,7 @@ int main() {
 
     String s3;
     if (!Strings.concat(s1, s2, &s3)) {
-        panic("There was an error concatenating strings\n");
+        YORU_PANIC("There was an error concatenating strings\n");
     }
 
     printf("%s\n", s3.cstr);

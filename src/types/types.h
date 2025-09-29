@@ -39,7 +39,7 @@ typedef union {
     char ch;
     cstr str;
     void *ptr;
-} ns(any);
+} YORU_NS(any);
 
 typedef union {
     bool b;
@@ -53,7 +53,7 @@ typedef union {
     u64 u64;
     f32 f32;
     f64 f64;
-} ns(numeric);
+} YORU_NS(numeric);
 
 typedef enum {
     TYPE_TAG_BOOL = 0,
@@ -70,4 +70,4 @@ typedef enum {
     TYPE_TAG_CHAR,
     TYPE_TAG_CSTR,
     TYPE_TAG_PTR,
-} ns(TypeTag);
+} YORU_NS(TypeTag);

@@ -10,21 +10,21 @@
 #include <string.h>
 #include <stdio.h>
 
-cstr string_from_template(cstr str, const ns(HashMap) *mappings);
+cstr string_from_template(cstr str, const YORU_NS(HashMap) *mappings);
 
 #ifdef YORU_IMPL
 
-struct ns(__ReadKeyResult) {
+struct YORU_NS(__ReadKeyResult) {
     cstr str;
     size_t pos;
-    ns(TypeTag) type;
+    YORU_NS(TypeTag) type;
 };
 
-static struct ns(__ReadKeyResult) read_key(cstr source, size_t pos);
-cstr ns(any_to_string(ns(any) value, ns(TypeTag) type));
+static struct YORU_NS(__ReadKeyResult) read_key(cstr source, size_t pos);
+cstr YORU_NS(any_to_string(YORU_NS(any) value, YORU_NS(TypeTag) type));
 
-cstr string_from_template(cstr str, const ns(HashMap) *mappings) {
-    ns(StringBuilder) *sb = ns(StringBuilders).init();
+cstr string_from_template(cstr str, const YORU_NS(HashMap) *mappings) {
+    YORU_NS(StringBuilder) *sb = YORU_NS(StringBuilders).init();
     if (!sb) return NULL;
 
     for (int i = 0; i < strlen(str); ++i) {
@@ -33,30 +33,30 @@ cstr string_from_template(cstr str, const ns(HashMap) *mappings) {
         switch (ch) {
             case '{':
                 {
-                    struct ns(__ReadKeyResult) key_res = read_key(str, i);
+                    struct YORU_NS(__ReadKeyResult) key_res = read_key(str, i);
                     if (key_res.str == NULL) {
-                        ns(StringBuilders).destroy(sb);
+                        YORU_NS(StringBuilders).destroy(sb);
                         return NULL;
                     }
                     
-                    ns(any) value;
-                    if (!ns(HashMaps).get(mappings, key_res.str, &value)) {
+                    YORU_NS(any) value;
+                    if (!YORU_NS(HashMaps).get(mappings, key_res.str, &value)) {
                         free((void *)key_res.str);
-                        ns(StringBuilders).destroy(sb);
+                        YORU_NS(StringBuilders).destroy(sb);
                         return NULL;
                     }
 
-                    cstr value_str = ns(any_to_string)(value, key_res.type);
+                    cstr value_str = YORU_NS(any_to_string)(value, key_res.type);
                     if (!value_str) {
                         free((void *)key_res.str);
-                        ns(StringBuilders).destroy(sb);
+                        YORU_NS(StringBuilders).destroy(sb);
                         return NULL;
                     }
                     
-                    if (!ns(StringBuilders).appends(sb, value_str)) {
+                    if (!YORU_NS(StringBuilders).appends(sb, value_str)) {
                         free((void *)value_str);
                         free((void *)key_res.str);
-                        ns(StringBuilders).destroy(sb);
+                        YORU_NS(StringBuilders).destroy(sb);
                         return NULL;
                     }
 
@@ -67,8 +67,8 @@ cstr string_from_template(cstr str, const ns(HashMap) *mappings) {
                 break;
 
             default:
-                if (!ns(StringBuilders).appendc(sb, ch)) {
-                    ns(StringBuilders).destroy(sb);
+                if (!YORU_NS(StringBuilders).appendc(sb, ch)) {
+                    YORU_NS(StringBuilders).destroy(sb);
                     return NULL;
                 }
                 break;
@@ -79,15 +79,15 @@ cstr string_from_template(cstr str, const ns(HashMap) *mappings) {
         }
     }
 
-    cstr result = ns(StringBuilders).to_string(sb);
-    ns(StringBuilders).destroy(sb);
+    cstr result = YORU_NS(StringBuilders).to_string(sb);
+    YORU_NS(StringBuilders).destroy(sb);
     return result;
 }
-static struct ns(__ReadKeyResult) read_key(cstr source, size_t pos) {
-    ns(StringBuilder) *template_sb = ns(StringBuilders).init();
+static struct YORU_NS(__ReadKeyResult) read_key(cstr source, size_t pos) {
+    YORU_NS(StringBuilder) *template_sb = YORU_NS(StringBuilders).init();
     size_t start_pos = pos;
     if (!template_sb) {
-        return (struct ns(__ReadKeyResult)){.str = NULL, .pos = start_pos, .type = TYPE_TAG_CSTR};
+        return (struct YORU_NS(__ReadKeyResult)){.str = NULL, .pos = start_pos, .type = TYPE_TAG_CSTR};
     }
     ++pos; // skip {
 
@@ -100,23 +100,23 @@ static struct ns(__ReadKeyResult) read_key(cstr source, size_t pos) {
                 }
                 // fallthrough
             default: 
-                if (!ns(StringBuilders).appendc(template_sb, ch)) {
-                    ns(StringBuilders).destroy(template_sb);
-                    return (struct ns(__ReadKeyResult)){.str = NULL, .pos = start_pos, .type = TYPE_TAG_CSTR};
+                if (!YORU_NS(StringBuilders).appendc(template_sb, ch)) {
+                    YORU_NS(StringBuilders).destroy(template_sb);
+                    return (struct YORU_NS(__ReadKeyResult)){.str = NULL, .pos = start_pos, .type = TYPE_TAG_CSTR};
                 }
                 break;
         }
     }
 
     if (source[pos] != '}') {
-        ns(StringBuilders).destroy(template_sb);
-        return (struct ns(__ReadKeyResult)){.str = NULL, .pos = start_pos, .type = TYPE_TAG_CSTR};
+        YORU_NS(StringBuilders).destroy(template_sb);
+        return (struct YORU_NS(__ReadKeyResult)){.str = NULL, .pos = start_pos, .type = TYPE_TAG_CSTR};
     }
     pos++; // skip }
 
-    cstr template_str = ns(StringBuilders).to_string(template_sb);    
+    cstr template_str = YORU_NS(StringBuilders).to_string(template_sb);    
     char *colon_pos = strchr(template_str, ':');
-    ns(TypeTag) type = TYPE_TAG_CSTR;
+    YORU_NS(TypeTag) type = TYPE_TAG_CSTR;
     cstr key_name;
     
     if (colon_pos) {
@@ -149,70 +149,70 @@ static struct ns(__ReadKeyResult) read_key(cstr source, size_t pos) {
     cstr keycopy = (cstr)malloc(strlen(key_name) + 1);
     if (!keycopy) {
         free((void *)template_str);
-        ns(StringBuilders).destroy(template_sb);
-        return (struct ns(__ReadKeyResult)){.str = NULL, .pos = start_pos, .type = TYPE_TAG_CSTR};
+        YORU_NS(StringBuilders).destroy(template_sb);
+        return (struct YORU_NS(__ReadKeyResult)){.str = NULL, .pos = start_pos, .type = TYPE_TAG_CSTR};
     }
     strcpy(keycopy, key_name);
     
     free((void *)template_str);
-    ns(StringBuilders).destroy(template_sb);
-    return (struct ns(__ReadKeyResult)){.str = keycopy, .pos = pos, .type = type};
+    YORU_NS(StringBuilders).destroy(template_sb);
+    return (struct YORU_NS(__ReadKeyResult)){.str = keycopy, .pos = pos, .type = type};
 }
 
-cstr ns(any_to_string(ns(any) value, ns(TypeTag) type)) {
-    ns(StringBuilder) *sb = ns(StringBuilders).init();
+cstr YORU_NS(any_to_string(YORU_NS(any) value, YORU_NS(TypeTag) type)) {
+    YORU_NS(StringBuilder) *sb = YORU_NS(StringBuilders).init();
     if (!sb) return NULL;
 
     switch (type) {
         case TYPE_TAG_CSTR:
-            if (!ns(StringBuilders).appends(sb, value.str)) {
-                ns(StringBuilders).destroy(sb);
+            if (!YORU_NS(StringBuilders).appends(sb, value.str)) {
+                YORU_NS(StringBuilders).destroy(sb);
                 return NULL;
             }
             break;
         case TYPE_TAG_I32:
-            if (!ns(StringBuilders).appendi(sb, value.i32)) {
-                ns(StringBuilders).destroy(sb);
+            if (!YORU_NS(StringBuilders).appendi(sb, value.i32)) {
+                YORU_NS(StringBuilders).destroy(sb);
                 return NULL;
             }
             break;
         case TYPE_TAG_U32:
-            if (!ns(StringBuilders).appendu(sb, value.u32)) {
-                ns(StringBuilders).destroy(sb);
+            if (!YORU_NS(StringBuilders).appendu(sb, value.u32)) {
+                YORU_NS(StringBuilders).destroy(sb);
                 return NULL;
             }
             break;
         case TYPE_TAG_I64:
-            if (!ns(StringBuilders).appendi(sb, value.i64)) {
-                ns(StringBuilders).destroy(sb);
+            if (!YORU_NS(StringBuilders).appendi(sb, value.i64)) {
+                YORU_NS(StringBuilders).destroy(sb);
                 return NULL;
             }
             break;
         case TYPE_TAG_U64:
-            if (!ns(StringBuilders).appendu(sb, value.u64)) {
-                ns(StringBuilders).destroy(sb);
+            if (!YORU_NS(StringBuilders).appendu(sb, value.u64)) {
+                YORU_NS(StringBuilders).destroy(sb);
                 return NULL;
             }
             break;
         case TYPE_TAG_F64:
-            if (!ns(StringBuilders).appendf(sb, value.f64, 6)) {
-                ns(StringBuilders).destroy(sb);
+            if (!YORU_NS(StringBuilders).appendf(sb, value.f64, 6)) {
+                YORU_NS(StringBuilders).destroy(sb);
                 return NULL;
             }
             break;
         case TYPE_TAG_CHAR:
-            if (!ns(StringBuilders).appendc(sb, value.ch)) {
-                ns(StringBuilders).destroy(sb);
+            if (!YORU_NS(StringBuilders).appendc(sb, value.ch)) {
+                YORU_NS(StringBuilders).destroy(sb);
                 return NULL;
             }
             break;
         default:
-            ns(StringBuilders).destroy(sb);
+            YORU_NS(StringBuilders).destroy(sb);
             return NULL;
     }
 
-    cstr result = ns(StringBuilders).to_string(sb);
-    ns(StringBuilders).destroy(sb);
+    cstr result = YORU_NS(StringBuilders).to_string(sb);
+    YORU_NS(StringBuilders).destroy(sb);
     return result;
 }
 

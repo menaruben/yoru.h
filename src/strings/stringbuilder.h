@@ -12,101 +12,101 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-typedef struct ns(StringBuilder) {
-    ns(LinkedList) *chars;
-} ns(StringBuilder);
+typedef struct YORU_NS(StringBuilder) {
+    YORU_NS(LinkedList) *chars;
+} YORU_NS(StringBuilder);
 
-typedef struct ns(IStringBuilderExtensions)
+typedef struct YORU_NS(IStringBuilderExtensions)
 {
-    func(ns(StringBuilder)*, init, void);
-    func(void, destroy, ns(StringBuilder) *sb);
+    YORU_FUNC(YORU_NS(StringBuilder)*, init, void);
+    YORU_FUNC(void, destroy, YORU_NS(StringBuilder) *sb);
 
-    func(bool, insertc, ns(StringBuilder) *sb, size_t index, char ch);
-    func(bool, inserts, ns(StringBuilder) *sb, size_t index, const char *str);
-    func(bool, inserti, ns(StringBuilder) *sb, size_t index, i64 i);
-    func(bool, insertu, ns(StringBuilder) *sb, size_t index, u64 u);
-    func(bool, insertf, ns(StringBuilder) *sb, size_t index, f64 f, size_t precision);
-    func(bool, insertfmt, ns(StringBuilder) *sb, size_t index, const char *fmt, ...);
+    YORU_FUNC(bool, insertc, YORU_NS(StringBuilder) *sb, size_t index, char ch);
+    YORU_FUNC(bool, inserts, YORU_NS(StringBuilder) *sb, size_t index, const char *str);
+    YORU_FUNC(bool, inserti, YORU_NS(StringBuilder) *sb, size_t index, i64 i);
+    YORU_FUNC(bool, insertu, YORU_NS(StringBuilder) *sb, size_t index, u64 u);
+    YORU_FUNC(bool, insertf, YORU_NS(StringBuilder) *sb, size_t index, f64 f, size_t precision);
+    YORU_FUNC(bool, insertfmt, YORU_NS(StringBuilder) *sb, size_t index, const char *fmt, ...);
     
-    func(bool, prependc, ns(StringBuilder) *sb, char ch);
-    func(bool, prepends, ns(StringBuilder) *sb, const char *str);
-    func(bool, prependi, ns(StringBuilder) *sb, i64 i);
-    func(bool, prependu, ns(StringBuilder) *sb, u64 u);
-    func(bool, prependf, ns(StringBuilder) *sb, f64 f, size_t precision);
-    func(bool, prependfmt, ns(StringBuilder) *sb, const char *fmt, ...);
+    YORU_FUNC(bool, prependc, YORU_NS(StringBuilder) *sb, char ch);
+    YORU_FUNC(bool, prepends, YORU_NS(StringBuilder) *sb, const char *str);
+    YORU_FUNC(bool, prependi, YORU_NS(StringBuilder) *sb, i64 i);
+    YORU_FUNC(bool, prependu, YORU_NS(StringBuilder) *sb, u64 u);
+    YORU_FUNC(bool, prependf, YORU_NS(StringBuilder) *sb, f64 f, size_t precision);
+    YORU_FUNC(bool, prependfmt, YORU_NS(StringBuilder) *sb, const char *fmt, ...);
 
-    func(bool, appendc, ns(StringBuilder) *sb, char ch);
-    func(bool, appends, ns(StringBuilder) *sb, const char *str);
-    func(bool, appendi, ns(StringBuilder) *sb, i64 i);
-    func(bool, appendu, ns(StringBuilder) *sb, u64 u);
-    func(bool, appendf, ns(StringBuilder) *sb, f64 f, size_t precision);
-    func(bool, appendfmt, ns(StringBuilder) *sb, const char *fmt, ...);
+    YORU_FUNC(bool, appendc, YORU_NS(StringBuilder) *sb, char ch);
+    YORU_FUNC(bool, appends, YORU_NS(StringBuilder) *sb, const char *str);
+    YORU_FUNC(bool, appendi, YORU_NS(StringBuilder) *sb, i64 i);
+    YORU_FUNC(bool, appendu, YORU_NS(StringBuilder) *sb, u64 u);
+    YORU_FUNC(bool, appendf, YORU_NS(StringBuilder) *sb, f64 f, size_t precision);
+    YORU_FUNC(bool, appendfmt, YORU_NS(StringBuilder) *sb, const char *fmt, ...);
     
-    func(size_t, length, const ns(StringBuilder) *sb);
-    func(void, clear, ns(StringBuilder) *sb);
-    func(const char *, to_string, const ns(StringBuilder) *sb);
-} ns(IStringBuilderExtensions);
+    YORU_FUNC(size_t, length, const YORU_NS(StringBuilder) *sb);
+    YORU_FUNC(void, clear, YORU_NS(StringBuilder) *sb);
+    YORU_FUNC(const char *, to_string, const YORU_NS(StringBuilder) *sb);
+} YORU_NS(IStringBuilderExtensions);
 
-static ns(StringBuilder) *ns(stringbuilder_init)();
-static void ns(stringbuilder_destroy)(ns(StringBuilder) *sb);
-static bool ns(stringbuilder_insertc)(ns(StringBuilder) *sb, size_t index, char ch);
-static bool ns(stringbuilder_inserts)(ns(StringBuilder) *sb, size_t index, const char *str);
-static bool ns(stringbuilder_inserti)(ns(StringBuilder) *sb, size_t index, i64 i);
-static bool ns(stringbuilder_insertu)(ns(StringBuilder) *sb, size_t index, u64 u);
-static bool ns(stringbuilder_insertf)(ns(StringBuilder) *sb, size_t index, f64 f, size_t precision);
-static bool ns(stringbuilder_insertfmt)(ns(StringBuilder) *sb, size_t index, const char *fmt, ...);
-static bool ns(stringbuilder_prependc)(ns(StringBuilder) *sb, char ch);
-static bool ns(stringbuilder_prepends)(ns(StringBuilder) *sb, const char *str);
-static bool ns(stringbuilder_prependi)(ns(StringBuilder) *sb, i64 i);
-static bool ns(stringbuilder_prependu)(ns(StringBuilder) *sb, u64 u);
-static bool ns(stringbuilder_prependf)(ns(StringBuilder) *sb, f64 f, size_t precision);
-static bool ns(stringbuilder_prependfmt)(ns(StringBuilder) *sb, const char *fmt, ...);
-static bool ns(stringbuilder_appendc)(ns(StringBuilder) *sb, char ch);
-static bool ns(stringbuilder_appends)(ns(StringBuilder) *sb, const char *str);
-static bool ns(stringbuilder_appendi)(ns(StringBuilder) *sb, i64 i);
-static bool ns(stringbuilder_appendu)(ns(StringBuilder) *sb, u64 u);
-static bool ns(stringbuilder_appendf)(ns(StringBuilder) *sb, f64 f, size_t precision);
-static bool ns(stringbuilder_appendfmt)(ns(StringBuilder) *sb, const char *fmt, ...);
-static size_t ns(stringbuilder_length)(const ns(StringBuilder) *sb);
-static void ns(stringbuilder_clear)(ns(StringBuilder) *sb);
-static const char *ns(stringbuilder_to_string)(const ns(StringBuilder) *sb);
+static YORU_NS(StringBuilder) *YORU_NS(stringbuilder_init)();
+static void YORU_NS(stringbuilder_destroy)(YORU_NS(StringBuilder) *sb);
+static bool YORU_NS(stringbuilder_insertc)(YORU_NS(StringBuilder) *sb, size_t index, char ch);
+static bool YORU_NS(stringbuilder_inserts)(YORU_NS(StringBuilder) *sb, size_t index, const char *str);
+static bool YORU_NS(stringbuilder_inserti)(YORU_NS(StringBuilder) *sb, size_t index, i64 i);
+static bool YORU_NS(stringbuilder_insertu)(YORU_NS(StringBuilder) *sb, size_t index, u64 u);
+static bool YORU_NS(stringbuilder_insertf)(YORU_NS(StringBuilder) *sb, size_t index, f64 f, size_t precision);
+static bool YORU_NS(stringbuilder_insertfmt)(YORU_NS(StringBuilder) *sb, size_t index, const char *fmt, ...);
+static bool YORU_NS(stringbuilder_prependc)(YORU_NS(StringBuilder) *sb, char ch);
+static bool YORU_NS(stringbuilder_prepends)(YORU_NS(StringBuilder) *sb, const char *str);
+static bool YORU_NS(stringbuilder_prependi)(YORU_NS(StringBuilder) *sb, i64 i);
+static bool YORU_NS(stringbuilder_prependu)(YORU_NS(StringBuilder) *sb, u64 u);
+static bool YORU_NS(stringbuilder_prependf)(YORU_NS(StringBuilder) *sb, f64 f, size_t precision);
+static bool YORU_NS(stringbuilder_prependfmt)(YORU_NS(StringBuilder) *sb, const char *fmt, ...);
+static bool YORU_NS(stringbuilder_appendc)(YORU_NS(StringBuilder) *sb, char ch);
+static bool YORU_NS(stringbuilder_appends)(YORU_NS(StringBuilder) *sb, const char *str);
+static bool YORU_NS(stringbuilder_appendi)(YORU_NS(StringBuilder) *sb, i64 i);
+static bool YORU_NS(stringbuilder_appendu)(YORU_NS(StringBuilder) *sb, u64 u);
+static bool YORU_NS(stringbuilder_appendf)(YORU_NS(StringBuilder) *sb, f64 f, size_t precision);
+static bool YORU_NS(stringbuilder_appendfmt)(YORU_NS(StringBuilder) *sb, const char *fmt, ...);
+static size_t YORU_NS(stringbuilder_length)(const YORU_NS(StringBuilder) *sb);
+static void YORU_NS(stringbuilder_clear)(YORU_NS(StringBuilder) *sb);
+static const char *YORU_NS(stringbuilder_to_string)(const YORU_NS(StringBuilder) *sb);
 
 #ifndef YORU_DISABLE_METHOD_TABLES
-const ns(IStringBuilderExtensions) ns(StringBuilders) = {
-    .init = ns(stringbuilder_init),
-    .destroy = ns(stringbuilder_destroy),
+const YORU_NS(IStringBuilderExtensions) YORU_NS(StringBuilders) = {
+    .init = YORU_NS(stringbuilder_init),
+    .destroy = YORU_NS(stringbuilder_destroy),
 
-    .insertc = ns(stringbuilder_insertc),
-    .inserts = ns(stringbuilder_inserts),
-    .inserti = ns(stringbuilder_inserti),
-    .insertu = ns(stringbuilder_insertu),
-    .insertf = ns(stringbuilder_insertf),
-    .insertfmt = ns(stringbuilder_insertfmt),
+    .insertc = YORU_NS(stringbuilder_insertc),
+    .inserts = YORU_NS(stringbuilder_inserts),
+    .inserti = YORU_NS(stringbuilder_inserti),
+    .insertu = YORU_NS(stringbuilder_insertu),
+    .insertf = YORU_NS(stringbuilder_insertf),
+    .insertfmt = YORU_NS(stringbuilder_insertfmt),
 
-    .prependc = ns(stringbuilder_prependc),
-    .prepends = ns(stringbuilder_prepends),
-    .prependi = ns(stringbuilder_prependi),
-    .prependu = ns(stringbuilder_prependu),
-    .prependf = ns(stringbuilder_prependf),
-    .prependfmt = ns(stringbuilder_prependfmt),
+    .prependc = YORU_NS(stringbuilder_prependc),
+    .prepends = YORU_NS(stringbuilder_prepends),
+    .prependi = YORU_NS(stringbuilder_prependi),
+    .prependu = YORU_NS(stringbuilder_prependu),
+    .prependf = YORU_NS(stringbuilder_prependf),
+    .prependfmt = YORU_NS(stringbuilder_prependfmt),
 
-    .appendc = ns(stringbuilder_appendc),
-    .appends = ns(stringbuilder_appends),
-    .appendi = ns(stringbuilder_appendi),
-    .appendu = ns(stringbuilder_appendu),
-    .appendf = ns(stringbuilder_appendf),
-    .appendfmt = ns(stringbuilder_appendfmt),
+    .appendc = YORU_NS(stringbuilder_appendc),
+    .appends = YORU_NS(stringbuilder_appends),
+    .appendi = YORU_NS(stringbuilder_appendi),
+    .appendu = YORU_NS(stringbuilder_appendu),
+    .appendf = YORU_NS(stringbuilder_appendf),
+    .appendfmt = YORU_NS(stringbuilder_appendfmt),
 
-    .length = ns(stringbuilder_length),
-    .clear = ns(stringbuilder_clear),
-    .to_string = ns(stringbuilder_to_string)
+    .length = YORU_NS(stringbuilder_length),
+    .clear = YORU_NS(stringbuilder_clear),
+    .to_string = YORU_NS(stringbuilder_to_string)
 };
 #endif
 
 #ifdef YORU_IMPL
 
-static ns(StringBuilder) *ns(stringbuilder_init)() {
-    ns(StringBuilder) *sb = (ns(StringBuilder) *)malloc(sizeof(ns(StringBuilder)));
+static YORU_NS(StringBuilder) *YORU_NS(stringbuilder_init)() {
+    YORU_NS(StringBuilder) *sb = (YORU_NS(StringBuilder) *)malloc(sizeof(YORU_NS(StringBuilder)));
     if (!sb) {
         return NULL;
     }
@@ -120,119 +120,119 @@ static ns(StringBuilder) *ns(stringbuilder_init)() {
     return sb;
 }
 
-static void ns(stringbuilder_destroy)(ns(StringBuilder) *sb) {
+static void YORU_NS(stringbuilder_destroy)(YORU_NS(StringBuilder) *sb) {
     if (!sb) return;
     Lists.destroy(sb->chars);
     free(sb);
     sb = NULL;
 }
 
-static bool ns(stringbuilder_insertc)(ns(StringBuilder) *sb, size_t index, char ch) {
+static bool YORU_NS(stringbuilder_insertc)(YORU_NS(StringBuilder) *sb, size_t index, char ch) {
     if (!sb || !sb->chars) return false;
     return Lists.insert(sb->chars, index, (any){.ch = ch});
 }
 
-static bool ns(stringbuilder_inserts)(ns(StringBuilder) *sb, size_t index, const char *str) {
+static bool YORU_NS(stringbuilder_inserts)(YORU_NS(StringBuilder) *sb, size_t index, const char *str) {
     if (!sb || !sb->chars || !str) return false;
     size_t len = 0;
     while (str[len] != '\0') ++len;
 
     for (size_t i = 0; i < len; ++i) {
-        if (! ns(stringbuilder_insertc)(sb, index + i, str[i])) {
+        if (! YORU_NS(stringbuilder_insertc)(sb, index + i, str[i])) {
             return false;
         }
     }
     return true;
 }
 
-static bool ns(stringbuilder_inserti)(ns(StringBuilder) *sb, size_t index, i64 i) {
+static bool YORU_NS(stringbuilder_inserti)(YORU_NS(StringBuilder) *sb, size_t index, i64 i) {
     if (!sb || !sb->chars) return false;
     char buffer[21]; // enough to hold -2^63 and null terminator
     int written = snprintf(buffer, sizeof(buffer), "%lld", (long long)i);
     if (written < 0) return false;
-    return ns(stringbuilder_inserts)(sb, index, buffer);
+    return YORU_NS(stringbuilder_inserts)(sb, index, buffer);
 }
 
-static bool ns(stringbuilder_insertu)(ns(StringBuilder) *sb, size_t index, u64 u) {
+static bool YORU_NS(stringbuilder_insertu)(YORU_NS(StringBuilder) *sb, size_t index, u64 u) {
     if (!sb || !sb->chars) return false;
     char buffer[21]; // enough to hold 2^64 - 1 and null terminator
     int written = snprintf(buffer, sizeof(buffer), "%llu", (unsigned long long)u);
     if (written < 0) return false;
-    return ns(stringbuilder_inserts)(sb, index, buffer);
+    return YORU_NS(stringbuilder_inserts)(sb, index, buffer);
 }
 
-static bool ns(stringbuilder_insertf)(ns(StringBuilder) *sb, size_t index, f64 f, size_t precision) {
+static bool YORU_NS(stringbuilder_insertf)(YORU_NS(StringBuilder) *sb, size_t index, f64 f, size_t precision) {
     if (!sb || !sb->chars) return false;
     if (precision > 20) precision = 20; // limit precision to avoid excessive length
     char buffer[32]; // enough to hold most floating point numbers with precision and null terminator
     int written = snprintf(buffer, sizeof(buffer), "%.*f", (int)precision, f);
     if (written < 0) return false;
-    return ns(stringbuilder_inserts)(sb, index, buffer);
+    return YORU_NS(stringbuilder_inserts)(sb, index, buffer);
 }
 
-static bool ns(stringbuilder_insertfmt)(ns(StringBuilder) *sb, size_t index, const char *fmt, ...) {
-    TODO("ns(stringbuilder_insertfmt)");
+static bool YORU_NS(stringbuilder_insertfmt)(YORU_NS(StringBuilder) *sb, size_t index, const char *fmt, ...) {
+    YORU_YORU_TODO("YORU_NS(stringbuilder_insertfmt)");
 }
 
-static bool ns(stringbuilder_prependc)(ns(StringBuilder) *sb, char ch) {
-    return ns(stringbuilder_insertc)(sb, 0, ch);
+static bool YORU_NS(stringbuilder_prependc)(YORU_NS(StringBuilder) *sb, char ch) {
+    return YORU_NS(stringbuilder_insertc)(sb, 0, ch);
 }
 
-static bool ns(stringbuilder_prepends)(ns(StringBuilder) *sb, const char *str) {
-    return ns(stringbuilder_inserts)(sb, 0, str);
+static bool YORU_NS(stringbuilder_prepends)(YORU_NS(StringBuilder) *sb, const char *str) {
+    return YORU_NS(stringbuilder_inserts)(sb, 0, str);
 }
 
-static bool ns(stringbuilder_prependi)(ns(StringBuilder) *sb, i64 i) {
-    return ns(stringbuilder_inserti)(sb, 0, i);
+static bool YORU_NS(stringbuilder_prependi)(YORU_NS(StringBuilder) *sb, i64 i) {
+    return YORU_NS(stringbuilder_inserti)(sb, 0, i);
 }
 
-static bool ns(stringbuilder_prependu)(ns(StringBuilder) *sb, u64 u) {
-    return ns(stringbuilder_insertu)(sb, 0, u);
+static bool YORU_NS(stringbuilder_prependu)(YORU_NS(StringBuilder) *sb, u64 u) {
+    return YORU_NS(stringbuilder_insertu)(sb, 0, u);
 }
 
-static bool ns(stringbuilder_prependf)(ns(StringBuilder) *sb, f64 f, size_t precision) {
-    return ns(stringbuilder_insertf)(sb, 0, f, precision);
+static bool YORU_NS(stringbuilder_prependf)(YORU_NS(StringBuilder) *sb, f64 f, size_t precision) {
+    return YORU_NS(stringbuilder_insertf)(sb, 0, f, precision);
 }
 
-static bool ns(stringbuilder_prependfmt)(ns(StringBuilder) *sb, const char *fmt, ...) {
-    return ns(stringbuilder_insertfmt)(sb, 0, fmt);
+static bool YORU_NS(stringbuilder_prependfmt)(YORU_NS(StringBuilder) *sb, const char *fmt, ...) {
+    return YORU_NS(stringbuilder_insertfmt)(sb, 0, fmt);
 }
 
-static bool ns(stringbuilder_appendc)(ns(StringBuilder) *sb, char ch) {
-    return ns(stringbuilder_insertc)(sb, sb->chars->length, ch);
+static bool YORU_NS(stringbuilder_appendc)(YORU_NS(StringBuilder) *sb, char ch) {
+    return YORU_NS(stringbuilder_insertc)(sb, sb->chars->length, ch);
 }
 
-static bool ns(stringbuilder_appends)(ns(StringBuilder) *sb, const char *str) {
-    return ns(stringbuilder_inserts)(sb, sb->chars->length, str);
+static bool YORU_NS(stringbuilder_appends)(YORU_NS(StringBuilder) *sb, const char *str) {
+    return YORU_NS(stringbuilder_inserts)(sb, sb->chars->length, str);
 }
 
-static bool ns(stringbuilder_appendi)(ns(StringBuilder) *sb, i64 i) {
-    return ns(stringbuilder_inserti)(sb, sb->chars->length, i);
+static bool YORU_NS(stringbuilder_appendi)(YORU_NS(StringBuilder) *sb, i64 i) {
+    return YORU_NS(stringbuilder_inserti)(sb, sb->chars->length, i);
 }
 
-static bool ns(stringbuilder_appendu)(ns(StringBuilder) *sb, u64 u) {
-    return ns(stringbuilder_insertu)(sb, sb->chars->length, u);
+static bool YORU_NS(stringbuilder_appendu)(YORU_NS(StringBuilder) *sb, u64 u) {
+    return YORU_NS(stringbuilder_insertu)(sb, sb->chars->length, u);
 }
 
-static bool ns(stringbuilder_appendf)(ns(StringBuilder) *sb, f64 f, size_t precision) {
-    return ns(stringbuilder_insertf)(sb, sb->chars->length, f, precision);
+static bool YORU_NS(stringbuilder_appendf)(YORU_NS(StringBuilder) *sb, f64 f, size_t precision) {
+    return YORU_NS(stringbuilder_insertf)(sb, sb->chars->length, f, precision);
 }
 
-static bool ns(stringbuilder_appendfmt)(ns(StringBuilder) *sb, const char *fmt, ...) {
-    return ns(stringbuilder_insertfmt)(sb, sb->chars->length, fmt);
+static bool YORU_NS(stringbuilder_appendfmt)(YORU_NS(StringBuilder) *sb, const char *fmt, ...) {
+    return YORU_NS(stringbuilder_insertfmt)(sb, sb->chars->length, fmt);
 }
 
-static size_t ns(stringbuilder_length)(const ns(StringBuilder) *sb) {
+static size_t YORU_NS(stringbuilder_length)(const YORU_NS(StringBuilder) *sb) {
     if (!sb || !sb->chars) return 0;
     return sb->chars->length;
 }
 
-static void ns(stringbuilder_clear)(ns(StringBuilder) *sb) {
+static void YORU_NS(stringbuilder_clear)(YORU_NS(StringBuilder) *sb) {
     if (!sb || !sb->chars) return;
     Lists.clear(sb->chars);
 }
 
-static const char *ns(stringbuilder_to_string)(const ns(StringBuilder) *sb) {
+static const char *YORU_NS(stringbuilder_to_string)(const YORU_NS(StringBuilder) *sb) {
     if (!sb || !sb->chars) return NULL;
     size_t len = sb->chars->length;
     if (len == 0) {

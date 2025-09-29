@@ -2,6 +2,6 @@
 
 #include "panic.h"
 
-#define TODO(msg) panicf("%s: not implemented yet", msg)
+#define YORU_YORU_TODO(msg) YORU_PANICF("%s: not implemented yet", msg)
 
-#define nameof(x) #x
+#define YORU_NAMEOF(x) #x

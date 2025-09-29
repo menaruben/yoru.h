@@ -6,8 +6,8 @@
 #include "collections/collections_test.h"
 
 const TestGroup groups[] = {
-    math_test_group,
-    collections_test_group,
+    math_YORU_TEST_GROUP,
+    collections_YORU_TEST_GROUP,
 };
 
 const size_t group_count = sizeof(groups) / sizeof(TestGroup);

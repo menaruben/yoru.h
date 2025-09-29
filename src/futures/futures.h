@@ -15,16 +15,16 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct ns(ThreadContext)
+typedef struct YORU_NS(ThreadContext)
 {
     void *(*callback)(void *);
     void *args;
     void *result;
     bool ready;
     int err;
-} ns(ThreadContext);
+} YORU_NS(ThreadContext);
 
-typedef struct ns(Future)
+typedef struct YORU_NS(Future)
 {
 #if YORU_PLATFORM_UNIX
     pthread_t thread;
@@ -33,43 +33,43 @@ typedef struct ns(Future)
 #else
 #error "Unsupported platform for threads. Please use POSIX or Windows."
 #endif
-    ns(ThreadContext) *ctx;
-} ns(Future);
+    YORU_NS(ThreadContext) *ctx;
+} YORU_NS(Future);
 
-void ns(future_init)(ns(Future) *future, void *(*callback)(void *), void *args);
-void *ns(future_await)(ns(Future) *future);
-void ns(future_cancel)(ns(Future) *future);
-void ns(future_destroy)(ns(Future) *future);
-void *ns(future_thread_wrapper)(void *context);
+void YORU_NS(future_init)(YORU_NS(Future) *future, void *(*callback)(void *), void *args);
+void *YORU_NS(future_await)(YORU_NS(Future) *future);
+void YORU_NS(future_cancel)(YORU_NS(Future) *future);
+void YORU_NS(future_destroy)(YORU_NS(Future) *future);
+void *YORU_NS(future_thread_wrapper)(void *context);
 
 #ifndef YORU_DISABLE_METHOD_TABLES
-typedef struct ns(IFutureExtensions) {
-    func(void, init, ns(Future) *future, void *(*callback)(void *), void *args);
-    func(void*, await, ns(Future) *future);
-    func(void, cancel, ns(Future) *future);
-    func(void, destroy, ns(Future) *future);
-} ns(IFutureExtensions);
+typedef struct YORU_NS(IFutureExtensions) {
+    YORU_FUNC(void, init, YORU_NS(Future) *future, void *(*callback)(void *), void *args);
+    YORU_FUNC(void*, await, YORU_NS(Future) *future);
+    YORU_FUNC(void, cancel, YORU_NS(Future) *future);
+    YORU_FUNC(void, destroy, YORU_NS(Future) *future);
+} YORU_NS(IFutureExtensions);
 
-const ns(IFutureExtensions) ns(Futures) = {
-    .init =    ns(future_init),
-    .await =   ns(future_await),
-    .cancel =  ns(future_cancel),
-    .destroy = ns(future_destroy)
+const YORU_NS(IFutureExtensions) YORU_NS(Futures) = {
+    .init =    YORU_NS(future_init),
+    .await =   YORU_NS(future_await),
+    .cancel =  YORU_NS(future_cancel),
+    .destroy = YORU_NS(future_destroy)
 };
 
 #endif
 
 #ifdef YORU_IMPL
 #if YORU_PLATFORM_UNIX
-void ns(future_init)(ns(Future) *future, void *(*callback)(void *), void *args)
+void YORU_NS(future_init)(YORU_NS(Future) *future, void *(*callback)(void *), void *args)
 {
-    ns(ThreadContext) *ctx = (ns(ThreadContext) *)malloc(sizeof(ns(ThreadContext)));
+    YORU_NS(ThreadContext) *ctx = (YORU_NS(ThreadContext) *)malloc(sizeof(YORU_NS(ThreadContext)));
     ctx->args = args;
     ctx->callback = callback;
     ctx->ready = false;
     future->ctx = ctx;
 
-    ctx->err = pthread_create(&future->thread, NULL, ns(future_thread_wrapper), (void *)ctx);
+    ctx->err = pthread_create(&future->thread, NULL, YORU_NS(future_thread_wrapper), (void *)ctx);
     if (ctx->err != 0)
     {
         future->thread = 0;
@@ -78,7 +78,7 @@ void ns(future_init)(ns(Future) *future, void *(*callback)(void *), void *args)
     }
 }
 
-void *ns(future_await)(ns(Future) *future)
+void *YORU_NS(future_await)(YORU_NS(Future) *future)
 {
     if (future->thread == 0)
     {
@@ -91,7 +91,7 @@ void *ns(future_await)(ns(Future) *future)
     return future->ctx->result;
 }
 
-void ns(future_cancel)(ns(Future) *future)
+void YORU_NS(future_cancel)(YORU_NS(Future) *future)
 {
     if (future->thread != 0)
     {
@@ -103,7 +103,7 @@ void ns(future_cancel)(ns(Future) *future)
     future->ctx->result = NULL;
 }
 
-void ns(future_destroy)(ns(Future) *future)
+void YORU_NS(future_destroy)(YORU_NS(Future) *future)
 {
     future->thread = 0;
 
@@ -114,24 +114,24 @@ void ns(future_destroy)(ns(Future) *future)
     }
 }
 
-void *ns(future_thread_wrapper)(void *context)
+void *YORU_NS(future_thread_wrapper)(void *context)
 {
-    ns(ThreadContext) *ctx = (ns(ThreadContext) *)context;
+    YORU_NS(ThreadContext) *ctx = (YORU_NS(ThreadContext) *)context;
     ctx->result = ctx->callback(ctx->args);
     ctx->ready = true;
     return ctx->result;
 }
 #elif YORU_PLATFORM_WINDOWS
-void ns(future_init)(ns(Future) *future, void *(*callback)(void *), void *args)
+void YORU_NS(future_init)(YORU_NS(Future) *future, void *(*callback)(void *), void *args)
 {
-    ns(ThreadContext) *ctx = (ns(ThreadContext) *)malloc(sizeof(ns(ThreadContext)));
+    YORU_NS(ThreadContext) *ctx = (YORU_NS(ThreadContext) *)malloc(sizeof(YORU_NS(ThreadContext)));
     ctx->args = args;
     ctx->callback = callback;
     ctx->ready = false;
     future->ctx = ctx;
 
     future->thread = CreateThread(
-        NULL, 0, (LPTHREAD_START_ROUTINE)ns(future_thread_wrapper), (void *)ctx, 0, NULL);
+        NULL, 0, (LPTHREAD_START_ROUTINE)YORU_NS(future_thread_wrapper), (void *)ctx, 0, NULL);
     if (future->thread == NULL)
     {
         future->ctx->ready = true;
@@ -139,7 +139,7 @@ void ns(future_init)(ns(Future) *future, void *(*callback)(void *), void *args)
     }
 }
 
-void *ns(future_await)(ns(Future) *future)
+void *YORU_NS(future_await)(YORU_NS(Future) *future)
 {
     if (future->thread == NULL)
     {
@@ -153,7 +153,7 @@ void *ns(future_await)(ns(Future) *future)
     return future->ctx->result;
 }
 
-void ns(future_cancel)(ns(Future) *future)
+void YORU_NS(future_cancel)(YORU_NS(Future) *future)
 {
     if (future->thread != NULL)
     {
@@ -166,7 +166,7 @@ void ns(future_cancel)(ns(Future) *future)
     future->ctx->result = NULL;
 }
 
-void ns(future_destroy)(ns(Future) *future)
+void YORU_NS(future_destroy)(YORU_NS(Future) *future)
 {
     if (future->thread != NULL)
     {
@@ -181,9 +181,9 @@ void ns(future_destroy)(ns(Future) *future)
     }
 }
 
-void *ns(future_thread_wrapper)(void *context)
+void *YORU_NS(future_thread_wrapper)(void *context)
 {
-    ns(ThreadContext) *ctx = (ns(ThreadContext) *)context;
+    YORU_NS(ThreadContext) *ctx = (YORU_NS(ThreadContext) *)context;
     ctx->result = ctx->callback(ctx->args);
     ctx->ready = true;
     return ctx->result;

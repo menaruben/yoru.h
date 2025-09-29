@@ -1,7 +1,7 @@
 #ifdef YORU_STRIP_NAMESPACE
-    #define ns(x) x
+    #define YORU_NS(x) x
 
 #else
-    #define ns(x) yoru_##x
+    #define YORU_NS(x) yoru_##x
 
 #endif
